@@ -5,7 +5,7 @@ export const metadata = {
   description: 'Create a new entity in ConnecTier',
 };
 
-export function NewEntityPage() {
+function NewEntityPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-2 mb-4">

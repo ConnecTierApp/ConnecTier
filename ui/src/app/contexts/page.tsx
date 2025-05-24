@@ -5,7 +5,7 @@ export const metadata = {
   description: 'List of entity matching contexts',
 };
 
-export function ContextsPage() {
+function ContextsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Contexts</h1>

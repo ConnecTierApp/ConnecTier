@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '../api-client';
 import { AxiosError } from 'axios';
 
-export function LoginPage() {
+
+function InnerLogin(){
   const router = useRouter();
   const searchParams = useSearchParams();
   const registered = searchParams.get('registered');
@@ -126,6 +127,11 @@ export function LoginPage() {
       </div>
     </div>
   );
+}
+function LoginPage() {
+  return <Suspense fallback={<div>Loading...</div>}>
+    <InnerLogin />
+    </Suspense>
 }
 
 export default LoginPage;

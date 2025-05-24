@@ -6,14 +6,11 @@ export const metadata = {
 };
 
 interface MatchDetailsPageProps {
-  params: {
-    contextId: string;
-    matchId: string;
-  };
+  params: Promise<{ contextId: string; matchId: string }>;
 }
 
-export function MatchDetailsPage({ params }: MatchDetailsPageProps) {
-  const { contextId, matchId } = params;
+async function MatchDetailsPage({ params }: MatchDetailsPageProps) {
+  const { contextId, matchId } = await params;
 
   return (
     <div className="container mx-auto px-4 py-8">
