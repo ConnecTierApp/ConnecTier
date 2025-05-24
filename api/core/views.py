@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 import json
-from core.models import UserProfile, Organization, Entity, Context
+from core.models import UserProfile, Organization, Entity, Context, Document
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -245,8 +245,8 @@ class EntityDetailView(View):
             'name': entity.name,
             'type': entity.type,
             'organization_id': str(entity.organization.id),
+            'document_ids': [str(doc.id) for doc in entity.documents.all()],
             'created_at': entity.created_at.isoformat(),
-            'updated_at': entity.updated_at.isoformat(),
         }, status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -260,4 +260,48 @@ class ProfileView(View):
             'organization_id': str(user.organization.id) if user.organization else None,
             'organization_name': user.organization.name if user.organization else None,
             'created_at': user.created_at.isoformat() if hasattr(user, 'created_at') else None,
+        }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DocumentCreateView(View):
+    @login_required
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        data = json.loads(request.body.decode('utf-8'))
+        entity_id = data.get('entity_id')
+        doc_type = data.get('type')
+        content = data.get('content')
+        if not entity_id or not isinstance(entity_id, str):
+            return JsonResponse({'error': 'entity_id is required.'}, status=400)
+        if doc_type != 'transcript':
+            return JsonResponse({'error': 'Only type "transcript" is allowed.'}, status=400)
+        if not isinstance(content, str) or not content:
+            return JsonResponse({'error': 'content is required.'}, status=400)
+        entity = Entity.objects.filter(id=entity_id, organization=user.organization).first()
+        if not entity:
+            return JsonResponse({'error': 'Entity not found or not in your organization.'}, status=404)
+        document = Document.objects.create(entity=entity, type=doc_type, content=content)
+        return JsonResponse({
+            'success': True,
+            'document_id': str(document.id),
+            'entity_id': str(entity.id),
+            'type': document.type,
+            'content': document.content,
+            'created_at': document.created_at.isoformat(),
+        }, status=201)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DocumentDetailView(View):
+    @login_required
+    def get(self, request, document_id, *args, **kwargs):
+        user = request.user
+        document = Document.objects.filter(id=document_id, entity__organization=user.organization).first()
+        if not document:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        return JsonResponse({
+            'document_id': str(document.id),
+            'entity_id': str(document.entity.id),
+            'type': document.type,
+            'content': document.content,
+            'created_at': document.created_at.isoformat(),
         }, status=200)
