@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Wait for the database to be ready
-until uv run python manage.py migrate --check; do
-  echo "Waiting for database to be ready..."
-  sleep 2
-done
+# until uv run python manage.py migrate --check; do
+#   echo "Waiting for database to be ready..."
+#   sleep 2
+# done
 
 # Run migrations
 uv run python manage.py migrate --noinput
