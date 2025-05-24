@@ -247,7 +247,6 @@ class EntityDetailView(View):
             'organization_id': str(entity.organization.id),
             'document_ids': [str(doc.id) for doc in entity.documents.all()],
             'created_at': entity.created_at.isoformat(),
-            'updated_at': entity.updated_at.isoformat(),
         }, status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -305,5 +304,4 @@ class DocumentDetailView(View):
             'type': document.type,
             'content': document.content,
             'created_at': document.created_at.isoformat(),
-            'updated_at': document.updated_at.isoformat(),
         }, status=200)
