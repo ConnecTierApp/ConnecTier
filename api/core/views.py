@@ -40,29 +40,31 @@ class RegisterView(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginView(View):
     def post(self, request, *args, **kwargs):
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            email = data.get('email')
-            password = data.get('password')
-            if not email or not password:
-                return JsonResponse({'error': 'Email and password are required.'}, status=400)
-            user = authenticate(request, email=email, password=password)
-            if user is None:
-                return JsonResponse({'error': 'Invalid credentials.'}, status=401)
-            payload = {
-                'user_id': str(user.id),
-                'email': user.email,
-                'exp': datetime.utcnow() + timedelta(days=7),
-            }
-            token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-            response = JsonResponse({'success': True, 'token': token})
-            response.set_cookie(
-                key='jwt',
-                value=token,
-                httponly=True,
-                samesite='Lax',
-                secure=False  # Set to True in production with HTTPS
-            )
-            return response
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+        data = json.loads(request.body.decode('utf-8'))
+        email = data.get('email')
+        password = data.get('password')
+        if not email or not password:
+            return JsonResponse({'error': 'Email and password are required.'}, status=400)
+        user = authenticate(request, email=email, password=password)
+        if user is None:
+            return JsonResponse({'error': 'Invalid credentials.'}, status=401)
+        user.last_login = datetime.utcnow()
+        user.save()
+        expiration_time = datetime.utcnow() + timedelta(days=7)  # Token valid for 7 days
+        payload = {
+            'user_id': str(user.id),
+            'email': user.email,
+            'exp': expiration_time,
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+        response = JsonResponse({'success': True, 'token': token})
+        response.set_cookie(
+            key='jwt',
+            value=token,
+            httponly=True,
+            samesite='Lax',
+            expires=expiration_time,
+            secure=(not settings.DEBUG),
+        )
+        return response
+

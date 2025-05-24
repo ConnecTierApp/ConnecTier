@@ -76,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middlewares.JWTAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -173,7 +174,20 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6
 # CrewAI (no special settings needed for hello world)
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https:\/\/(.*\.)?connectier\.app$",
+        r"^http:\/\/(.*\.)?connectier\.app$",
+    ]
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(
     default_headers := [
