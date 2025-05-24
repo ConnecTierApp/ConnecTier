@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 import json
-from core.models import UserProfile, Organization
+from core.models import UserProfile, Organization, Entity
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -96,4 +96,35 @@ class OrganizationUpdateView(View):
         org.name = new_name
         org.save()
         return JsonResponse({'success': True, 'organization_id': str(org.id), 'organization_name': org.name})
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EntityCreateView(View):
+    @login_required
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        data = json.loads(request.body.decode('utf-8'))
+        name = data.get('name')
+        entity_type = data.get('type')
+        if not isinstance(name, str) or not (1 <= len(name) <= 255):
+            return JsonResponse({'error': 'name must be a non-empty string up to 255 characters.'}, status=400)
+        if not isinstance(entity_type, str) or not (1 <= len(entity_type) <= 64):
+            return JsonResponse({'error': 'type must be a non-empty string up to 64 characters.'}, status=400)
+        
+        # Validate that the entity type is one of the allowed choices
+        allowed_types = [choice[0] for choice in Entity.EntityType.choices]
+        if entity_type not in allowed_types:
+            return JsonResponse({'error': f'type must be one of {allowed_types}.'}, status=400)
+        
+        entity = Entity.objects.create(
+            name=name,
+            type=entity_type,
+            organization=user.organization
+        )
+        return JsonResponse({
+            'success': True,
+            'entity_id': str(entity.id),
+            'name': entity.name,
+            'type': entity.type,
+            'organization_id': str(entity.organization.id)
+        }, status=201)
 

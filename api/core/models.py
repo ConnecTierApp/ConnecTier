@@ -74,8 +74,12 @@ class UserProfile(AbstractUser, BaseModel):
     
 
 class Entity(BaseModel):
+    class EntityType(models.TextChoices):
+        STARTUP = 'startup', 'Startup'
+        MENTOR = 'mentor', 'Mentor'
+    
     name = models.CharField(max_length=255)
-    type = models.CharField(max_length=64)  # e.g. 'startup', 'mentor'
+    type = models.CharField(max_length=64, choices=EntityType.choices)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='entities')
 
 class Context(BaseModel):
