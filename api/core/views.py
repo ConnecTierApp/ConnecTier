@@ -209,3 +209,42 @@ class ContextListView(View):
             for c in contexts
         ]
         return JsonResponse({'results': results}, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextDetailView(View):
+    @login_required
+    def get(self, request, context_id, *args, **kwargs):
+        user = request.user
+        context = Context.objects.filter(id=context_id, entities__organization=user.organization).distinct().first()
+        if not context:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        return JsonResponse({
+            'context_id': str(context.id),
+            'name': context.name,
+            'prompt': context.prompt,
+            'created_at': context.created_at.isoformat(),
+            'entities': [
+                {
+                    'entity_id': str(e.id),
+                    'name': e.name,
+                    'type': e.type,
+                } for e in context.entities.all()
+            ]
+        }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EntityDetailView(View):
+    @login_required
+    def get(self, request, entity_id, *args, **kwargs):
+        user = request.user
+        entity = Entity.objects.filter(id=entity_id, organization=user.organization).first()
+        if not entity:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        return JsonResponse({
+            'entity_id': str(entity.id),
+            'name': entity.name,
+            'type': entity.type,
+            'organization_id': str(entity.organization.id),
+            'created_at': entity.created_at.isoformat(),
+            'updated_at': entity.updated_at.isoformat(),
+        }, status=200)
