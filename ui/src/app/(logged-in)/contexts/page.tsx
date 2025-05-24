@@ -1,19 +1,12 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { useApi } from '@/hooks/use-api';
+import { useContexts } from '@/hooks/use-contexts';
 import Link from 'next/link';
 
 
-interface Context {
-  context_id: string;
-  name: string;
-  created_at: string;
-}
-
-
 function ContextsPage() {
-  const { data: contextsResponse, error, isLoading } = useApi<{ results: Context[] }>("/contexts");
+  const { data: contextsResponse, error, isLoading } = useContexts();
   const contexts = contextsResponse?.results;
 
   if (error) {

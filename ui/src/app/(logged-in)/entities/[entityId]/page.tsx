@@ -1,52 +1,13 @@
 "use client"
 
-import Link from 'next/link';
+import { useDocument } from '@/hooks/use-document';
+import { useEntity } from '@/hooks/use-entity';
 import { Building, Users } from 'lucide-react';
-import { useApi } from '@/hooks/use-api';
+import Link from 'next/link';
 import React from 'react';
 
 interface EntityDetailPageProps {
   params: Promise<{ entityId: string }>;
-}
-
-interface Entity {
-  id: string;
-  name: string;
-  type: 'startup' | 'mentor';
-  organization: string;
-  documentIds: string[];
-  contextIds: string[];
-  createdAt: string;
-}
-
-interface Doc {
-  id: string;
-  entity_id: string;
-  type: string;
-  content: string;
-  created_at: string;
-}
-
-function mapApiEntity(apiEntity: unknown): Entity {
-  const entity = apiEntity as {
-    entity_id: string;
-    name: string;
-    type: 'startup' | 'mentor';
-    organization_id: string;
-    document_ids: string[];
-    context_ids: string[];
-    created_at: string;
-  };
-
-  return {
-    id: entity.entity_id,
-    name: entity.name,
-    type: entity.type,
-    organization: entity.organization_id,
-    documentIds: entity.document_ids,
-    contextIds: entity.context_ids, 
-    createdAt: entity.created_at,
-  };
 }
 
 function getTypeIcon(type: string) {
@@ -67,20 +28,12 @@ function EntityDetailPage({ params }: EntityDetailPageProps) {
     data: apiEntity,
     error,
     isLoading,
-  } = useApi<{
-    entity_id: string;
-    name: string;
-    type: 'startup' | 'mentor';
-    organization_id: string;
-    document_ids: string[];
-    context_ids: string[];
-    created_at: string;
-  }>(entityId ? `/entity/${entityId}` : null);
+  } = useEntity(entityId);
 
   const documentId = apiEntity?.document_ids?.[0];
 
   // fetch documents
-  const { data: documents, error: documentsError, isLoading: documentsLoading } = useApi<Doc>(documentId ? `/document/${documentId}` : null);
+  const { data: documents, error: documentsError, isLoading: documentsLoading } = useDocument(documentId || '');
 
   if (error || documentsError) {
     return (
@@ -98,27 +51,25 @@ function EntityDetailPage({ params }: EntityDetailPageProps) {
     );
   }
 
-  const entity = mapApiEntity(apiEntity);
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-2 mb-4">
-        <Link href={`/entities?type=${entity.type}`} className="text-indigo-600 hover:text-indigo-800">
-          ← Back to {getTypeLabel(entity.type)}s
+        <Link href={`/entities?type=${apiEntity.type}`} className="text-indigo-600 hover:text-indigo-800">
+          ← Back to {getTypeLabel(apiEntity.type)}s
         </Link>
       </div>
 
       <div className="flex items-center gap-2 mb-2">
-        {getTypeIcon(entity.type)}
-        <h1 className="text-2xl font-bold">{entity.name}</h1>
-        <span className="text-sm text-muted-foreground font-medium">({getTypeLabel(entity.type)})</span>
+        {getTypeIcon(apiEntity.type)}
+        <h1 className="text-2xl font-bold">{apiEntity.name}</h1>
+        <span className="text-sm text-muted-foreground font-medium">({getTypeLabel(apiEntity.type)})</span>
       </div>
       <p className="text-gray-600 mb-6">View and manage entity details</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">{getTypeLabel(entity.type)} Details</h2>
+            <h2 className="text-xl font-semibold">{getTypeLabel(apiEntity.type)} Details</h2>
             {/* <div className="space-x-2">
               <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">
                 Edit
@@ -133,11 +84,11 @@ function EntityDetailPage({ params }: EntityDetailPageProps) {
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
               <div>
                 <dt className="text-sm font-medium text-gray-500">Name</dt>
-                <dd className="mt-1 text-sm text-gray-900">{entity.name}</dd>
+                <dd className="mt-1 text-sm text-gray-900">{apiEntity.name}</dd>
               </div>
               <div>
                 <dt className="text-sm font-medium text-gray-500">Type</dt>
-                <dd className="mt-1 text-sm text-gray-900 flex items-center">{getTypeIcon(entity.type)} {getTypeLabel(entity.type)}</dd>
+                <dd className="mt-1 text-sm text-gray-900 flex items-center">{getTypeIcon(apiEntity.type)} {getTypeLabel(apiEntity.type)}</dd>
               </div>
               {/* Add more fields here as needed */}
               <div className="md:col-span-2">

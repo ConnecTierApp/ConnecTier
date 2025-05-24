@@ -4,26 +4,14 @@ import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Building, Users, Plus, Trash2, Eye } from 'lucide-react';
-import { useApi } from '@/hooks/use-api';
 import { Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
-
-interface Entity {
-  entity_id: string;
-  name: string;
-  type: string;
-  organization: string;
-  documentIds: string[];
-  contextIds: string[];
-  createdAt: string;
-}
+import { useEntities } from '@/hooks/use-entities';
 
 export const EntitiesList: React.FC = () => {
   const searchParams = useSearchParams();
   const entityType = searchParams.get('type') || 'all';
-  const { data: entitiesResponse, error, isLoading } = useApi<{ results: Entity[] }>(
-    `/entities?type=${entityType}`
-  );
+  const { data: entitiesResponse, error, isLoading } = useEntities(entityType);
   const entities = entitiesResponse?.results;
   
   // Filter entities based on type parameter
