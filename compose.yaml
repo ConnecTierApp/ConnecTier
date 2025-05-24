@@ -13,7 +13,6 @@ services:
     build:
       context: ./api
     domainname: api.connectier.app
-    command: daphne -b 0.0.0.0 -p 8000 config.asgi:application
     ports:
       - "8000:8000"
     depends_on:
@@ -30,7 +29,7 @@ services:
   worker:
     build:
       context: ./api
-    command: celery -A config worker -l info
+    command: uv run celery -A config worker -l info
     depends_on:
       - postgres
       - redis
