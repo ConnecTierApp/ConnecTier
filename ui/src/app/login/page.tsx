@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { api, ApiError } from '../api-client';
+import { api } from '../api-client';
+import { AxiosError } from 'axios';
 
 export function LoginPage() {
   const router = useRouter();
@@ -42,25 +43,18 @@ export function LoginPage() {
         password: formData.password,
       };
       
-      interface LoginResponse {
-        token: string;
-        success: boolean;
-      }
+      // Send login request - the server will set cookies automatically
+      await api.post('/login/', loginData);
       
-      const response = await api.post<LoginResponse>('/api/login', loginData);
-      
-      // Store the token in localStorage
-      if (response.data.token) {
-        localStorage.setItem('auth_token', response.data.token);
-        
-        // Navigate to dashboard on successful login
-        router.push('/dashboard');
+      // On successful login, redirect to dashboard
+      router.push('/dashboard');
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data?.error || error.message || 'Login failed. Please check your credentials.';
+        setError(errorMessage);
       } else {
-        setError('Invalid response from server. Please try again.');
+        setError('An unexpected error occurred. Please try again.');
       }
-    } catch (apiError) {
-      const err = apiError as ApiError;
-      setError(err.data?.error as string || err.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }

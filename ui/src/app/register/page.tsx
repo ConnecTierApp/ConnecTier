@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { api, ApiError } from '../api-client';
+import { api } from '../api-client';
+import { AxiosError } from 'axios';
 
 export function RegisterPage() {
   const router = useRouter();
@@ -56,12 +57,17 @@ export function RegisterPage() {
 
       // Send registration request
       try {
-        await api.post('/api/register', registrationData);
+        await api.post('/register/', registrationData);
         // Redirect to login page on successful registration
-        router.push('/login?registered=true');
-      } catch (apiError) {
-        const err = apiError as ApiError;
-        setError(err.data?.error as string || err.message || 'Registration failed. Please try again.');
+        router.push('/login/?registered=true');
+      } catch (error) {
+        // Handle error from axios
+        if (error instanceof AxiosError) {
+          const errorMessage = error.response?.data?.error || error.message || 'Registration failed. Please try again.';
+          setError(errorMessage);
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
       }
     } catch (err) {
       setError('An error occurred during registration. Please try again.');
