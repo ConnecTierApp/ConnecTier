@@ -205,6 +205,7 @@ class ContextListView(View):
         contexts = Context.objects.filter(entities__organization=user.organization).distinct().order_by('-created_at')
         results = [
             {
+                'context_id': str(c.id),
                 'name': c.name,
                 'created_at': c.created_at.isoformat(),
             }
