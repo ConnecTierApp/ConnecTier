@@ -18,6 +18,9 @@ docker compose -f compose.local.yaml up -d
 
 This will start all required services in the background.
 
+- API can be accessed via http://localhost:8000
+- UI can be accessed via http://localhost:3000
+
 ## Deployment
 
 This project is deployed to AWS using Defang CLI to generate ECS containers. Deployment is handled automatically via CI/CD on GitHub.
