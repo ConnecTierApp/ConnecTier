@@ -248,3 +248,16 @@ class EntityDetailView(View):
             'created_at': entity.created_at.isoformat(),
             'updated_at': entity.updated_at.isoformat(),
         }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ProfileView(View):
+    @login_required
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return JsonResponse({
+            'user_id': str(user.id),
+            'email': user.email,
+            'organization_id': str(user.organization.id) if user.organization else None,
+            'organization_name': user.organization.name if user.organization else None,
+            'created_at': user.created_at.isoformat() if hasattr(user, 'created_at') else None,
+        }, status=200)
