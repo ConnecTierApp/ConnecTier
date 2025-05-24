@@ -9,8 +9,18 @@ import jwt
 from django.conf import settings
 from datetime import datetime, timedelta
 import logging
+from functools import wraps
 
 logger = logging.getLogger(__name__)
+
+def login_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(self, request, *args, **kwargs):
+        user = getattr(request, 'user', None)
+        if not user or not user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required.'}, status=401)
+        return view_func(self, request, *args, **kwargs)
+    return _wrapped_view
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(View):
@@ -67,4 +77,23 @@ class LoginView(View):
             secure=(not settings.DEBUG),
         )
         return response
+
+@method_decorator(csrf_exempt, name='dispatch')
+class OrganizationUpdateView(View):
+    @login_required
+    def put(self, request, org_id, *args, **kwargs):
+        user = request.user
+        data = json.loads(request.body.decode('utf-8'))
+        new_name = data.get('organization_name')
+        if not new_name:
+            return JsonResponse({'error': 'organization_name is required.'}, status=400)
+        if len(new_name) > 255:
+            return JsonResponse({'error': 'organization_name must be 255 characters or less.'}, status=400)
+        # Only allow update if user belongs to the org
+        if str(user.organization.id) != org_id:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        org = user.organization
+        org.name = new_name
+        org.save()
+        return JsonResponse({'success': True, 'organization_id': str(org.id), 'organization_name': org.name})
 
