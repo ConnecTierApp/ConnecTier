@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 import json
-from core.models import UserProfile, Organization, Entity
+from core.models import UserProfile, Organization, Entity, Context
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -168,3 +168,44 @@ class EntityListView(View):
         ]
         return JsonResponse({'results': results}, status=200)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextCreateView(View):
+    @login_required
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        data = json.loads(request.body.decode('utf-8'))
+        name = data.get('name')
+        prompt = data.get('prompt')
+        entity_ids = data.get('entity_ids', [])
+        if not isinstance(name, str) or not name:
+            return JsonResponse({'error': 'name is required.'}, status=400)
+        if not isinstance(prompt, str) or not prompt:
+            return JsonResponse({'error': 'prompt is required.'}, status=400)
+        if not isinstance(entity_ids, list) or not entity_ids:
+            return JsonResponse({'error': 'entity_ids must be a non-empty list.'}, status=400)
+        # Fetch entities and check organization
+        entities = list(Entity.objects.filter(id__in=entity_ids, organization=user.organization))
+        if len(entities) != len(entity_ids):
+            return JsonResponse({'error': 'Some of the provided entities were not found in our records.'}, status=404)
+        # Check at least 1 of each type
+        types = set(e.type for e in entities)
+        if 'startup' not in types or 'mentor' not in types:
+            return JsonResponse({'error': 'At least one entity of each type (startup and mentor) is required.'}, status=400)
+        context = Context.objects.create(name=name, prompt=prompt)
+        context.entities.set(entities)
+        return JsonResponse({'success': True, 'context_id': str(context.id)}, status=201)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextListView(View):
+    @login_required
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        contexts = Context.objects.filter(entities__organization=user.organization).distinct().order_by('-created_at')
+        results = [
+            {
+                'name': c.name,
+                'created_at': c.created_at.isoformat(),
+            }
+            for c in contexts
+        ]
+        return JsonResponse({'results': results}, status=200)
