@@ -1,7 +1,6 @@
-
-![logo](./assets/logo.png)
-
 # ConnectTier
+
+<img src="./assets/logo.png" alt="logo" width="180" height="180" />
 
 ConnecTier is a match-making system for startups, where founders and mentors can be matched based on their qualifications and interest.
 
