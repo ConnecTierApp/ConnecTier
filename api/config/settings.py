@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from socket import gethostname, gethostbyname_ex
 import ipaddress
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -104,6 +105,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # parse DATABASE_URL
 import dj_database_url
+
+# print DATABASE_URL
+print('@@@@@@')
+print(os.environ.get('DATABASE_URL'))
+print('@@@@@@')
+
+
 DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL')),
 }
