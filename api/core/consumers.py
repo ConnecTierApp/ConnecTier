@@ -2,13 +2,38 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.conf import settings
-
+from core.models import Context, Entity  # Import models for org check
+from django.db.models import Q
 import uuid
 
-class EchoConsumer(AsyncWebsocketConsumer):
+class ContextConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        # Get context_id from URL
+        context_id = self.scope['url_route']['kwargs'].get('context_id')
+        user = self.scope.get('user')
+        if not user or not user.is_authenticated:
+            await self.close(code=4001)
+            return
+        # Try to find the context and check org
+        try:
+            # Get the context and prefetch entities and their organizations
+            context = await async_to_sync(Context.objects.prefetch_related('entities').get)(id=context_id)
+            # Get all organizations for entities in this context
+            entity_org_ids = set()
+            for entity in context.entities.all():
+                entity_org_ids.add(str(entity.organization_id))
+            # User must own the org of all entities (or at least one, depending on your policy)
+            if str(user.organization_id) not in entity_org_ids:
+                await self.close(code=4003)
+                return
+        except Context.DoesNotExist:
+            await self.close(code=4040)
+            return
+        except Exception as e:
+            await self.close(code=4000)
+            return
         # Generate a safe, unique group name for this connection
-        self.group_name = f"echo_{uuid.uuid4().hex}"
+        self.group_name = f"context_{context_id}"
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 

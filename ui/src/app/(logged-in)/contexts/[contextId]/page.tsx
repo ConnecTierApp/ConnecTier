@@ -1,27 +1,27 @@
-import Link from 'next/link';
+"use client";
 
-export const metadata = {
-  title: 'Context Details | ConnecTier',
-  description: 'View and manage your context',
-};
+import Link from 'next/link';
+import { useContext } from '@/hooks/use-context';
+import React from 'react';
 
 interface ContextPageProps {
   params: Promise<{ contextId: string }>;
 }
 
-async function ContextPage({ params }: ContextPageProps) {
-  const { contextId } = await params;
+function ContextPage({ params }: ContextPageProps) {
+  const { contextId } = React.use(params);
+  const { data: context } = useContext(contextId);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-2 mb-4">
         <Link href="/contexts" className="text-indigo-600 hover:text-indigo-800">
-          ← Back to Contexts
+          ← Back to Cohorts
         </Link>
       </div>
       
-      <h1 className="text-2xl font-bold mb-2">Context: {contextId}</h1>
-      <p className="text-gray-600 mb-6">View and manage your entity matching context</p>
+      <h1 className="text-2xl font-bold mb-2">Cohort: {context?.name}</h1>
+      <p className="text-gray-600 mb-6">View and manage cohort</p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-md">

@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { Alert } from '@/components/ui/alert';
 import { useEntities } from '@/hooks/use-entities';
 
-export const EntitiesList: React.FC = () => {
+export function Entities() {
   const searchParams = useSearchParams();
   const entityType = searchParams.get('type') || 'all';
   const { data: entitiesResponse, error, isLoading } = useEntities(entityType);

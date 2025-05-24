@@ -25,7 +25,7 @@ type DocumentData = {
   created_at: string;
 };
 
-type MutateKey = string | null | undefined;
+export type MutateKey = string | null | undefined;
 
 /**
  * Custom fetcher function that uses our API client
@@ -78,6 +78,13 @@ export function useApiMutation() {
     ));
     return response.data;
   };
+
+  // const createContext = async (data: { name: string; entity_ids: string[], prompt: string }): Promise<DocumentData> => {
+  //   const response = await api.post('/contexts/', data);
+  //   // Invalidate any relevant cache keys
+  //   await globalMutate((key: MutateKey) => typeof key === 'string' && key.startsWith('/contexts'));
+  //   return response.data;
+  // };
 
   return {
     createEntity,

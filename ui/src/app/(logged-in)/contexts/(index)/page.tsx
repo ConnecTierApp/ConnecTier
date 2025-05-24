@@ -31,9 +31,6 @@ function ContextsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Cohorts</h1>
-      <p className="mb-4">List of cohorts (groupings for entity matching sessions)</p>
-
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Your Cohorts</h2>

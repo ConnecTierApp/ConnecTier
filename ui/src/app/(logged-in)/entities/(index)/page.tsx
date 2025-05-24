@@ -1,4 +1,4 @@
-import { EntitiesList } from '@/components/entities/entities-list';
+import { Entities } from '@/app/(logged-in)/entities/(index)/components/entities/entities';
 import { Suspense } from 'react';
 
 export const metadata = {
@@ -8,7 +8,7 @@ export const metadata = {
 
 function EntitiesPage() {
   return <Suspense fallback={<div>Loading...</div>}>
-    <EntitiesList />
+    <Entities />
   </Suspense>;
 }
 

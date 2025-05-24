@@ -174,6 +174,7 @@ class ContextCreateView(View):
     @login_required
     def post(self, request, *args, **kwargs):
         user = request.user
+        org = user.organization
         data = json.loads(request.body.decode('utf-8'))
         name = data.get('name')
         prompt = data.get('prompt')
@@ -185,14 +186,14 @@ class ContextCreateView(View):
         if not isinstance(entity_ids, list) or not entity_ids:
             return JsonResponse({'error': 'entity_ids must be a non-empty list.'}, status=400)
         # Fetch entities and check organization
-        entities = list(Entity.objects.filter(id__in=entity_ids, organization=user.organization))
+        entities = list(Entity.objects.filter(id__in=entity_ids, organization=org))
         if len(entities) != len(entity_ids):
             return JsonResponse({'error': 'Some of the provided entities were not found in our records.'}, status=404)
         # Check at least 1 of each type
         types = set(e.type for e in entities)
         if 'startup' not in types or 'mentor' not in types:
             return JsonResponse({'error': 'At least one entity of each type (startup and mentor) is required.'}, status=400)
-        context = Context.objects.create(name=name, prompt=prompt)
+        context = Context.objects.create(name=name, prompt=prompt, organization=org)
         context.entities.set(entities)
         match_entities.delay(str(context.id))
         return JsonResponse({'success': True, 'context_id': str(context.id)}, status=201)
@@ -203,11 +204,14 @@ class ContextListView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         contexts = Context.objects.filter(entities__organization=user.organization).distinct().order_by('-created_at')
+        org = user.organization
+        org_id = str(org.id) if org else None
         results = [
             {
                 'context_id': str(c.id),
                 'name': c.name,
                 'created_at': c.created_at.isoformat(),
+                'organization_id': org_id
             }
             for c in contexts
         ]
@@ -221,11 +225,14 @@ class ContextDetailView(View):
         context = Context.objects.filter(id=context_id, entities__organization=user.organization).distinct().first()
         if not context:
             return JsonResponse({'error': 'Not found.'}, status=404)
+        org = user.organization
+        org_id = str(org.id) if org else None
         return JsonResponse({
             'context_id': str(context.id),
             'name': context.name,
             'prompt': context.prompt,
             'created_at': context.created_at.isoformat(),
+            'organization_id': org_id,
             'entities': [
                 {
                     'entity_id': str(e.id),
@@ -243,11 +250,12 @@ class EntityDetailView(View):
         entity = Entity.objects.filter(id=entity_id, organization=user.organization).first()
         if not entity:
             return JsonResponse({'error': 'Not found.'}, status=404)
+        org_id = str(entity.organization.id) if entity.organization else None
         return JsonResponse({
             'entity_id': str(entity.id),
             'name': entity.name,
             'type': entity.type,
-            'organization_id': str(entity.organization.id),
+            'organization_id': org_id,
             'document_ids': [str(doc.id) for doc in entity.documents.all()],
             'context_ids': [str(context.id) for context in entity.contexts.all()],
             'created_at': entity.created_at.isoformat(),

@@ -86,6 +86,7 @@ class Entity(BaseModel):
         verbose_name_plural = "entities"
 
 class Context(BaseModel):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='contexts', null=True)
     name = models.CharField(max_length=255)
     prompt = models.TextField()
     entities = models.ManyToManyField(Entity, related_name='contexts')
