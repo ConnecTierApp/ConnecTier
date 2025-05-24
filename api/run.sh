@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -euo pipefail
+# set -euo pipefail
 
 # Wait for the database to be ready
 # until uv run python manage.py migrate --check; do
