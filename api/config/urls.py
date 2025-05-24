@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView
+from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView, EntityListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('organization/<str:org_id>', OrganizationUpdateView.as_view(), name='organization_update'),
     path('entity/', EntityCreateView.as_view(), name='entity_create'),
+    path('entities/', EntityListView.as_view(), name='entity_list'),
 ]

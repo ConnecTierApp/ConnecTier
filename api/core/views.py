@@ -128,3 +128,43 @@ class EntityCreateView(View):
             'organization_id': str(entity.organization.id)
         }, status=201)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class EntityListView(View):
+    @login_required
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        entities = Entity.objects.filter(organization=user.organization)
+
+        # Filtering by created_after
+        created_after = request.GET.get('created_after')
+        if created_after:
+            try:
+                from django.utils.dateparse import parse_datetime
+                created_after_dt = parse_datetime(created_after)
+                if created_after_dt:
+                    entities = entities.filter(created_at__gt=created_after_dt)
+            except Exception:
+                pass  # Ignore invalid date
+
+        # Filtering by type
+        entity_type = request.GET.get('type')
+        if entity_type in dict(Entity.EntityType.choices):
+            entities = entities.filter(type=entity_type)
+
+        # Filtering by name (case-insensitive contains)
+        name = request.GET.get('name', '')
+        if name:
+            entities = entities.filter(name__icontains=name)
+
+        results = [
+            {
+                'entity_id': str(e.id),
+                'name': e.name,
+                'type': e.type,
+                'organization_id': str(e.organization.id),
+                'created_at': e.created_at.isoformat(),
+            }
+            for e in entities.order_by('-created_at')
+        ]
+        return JsonResponse({'results': results}, status=200)
+
