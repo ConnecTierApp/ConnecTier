@@ -1,51 +1,64 @@
 import json
+import logging
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import async_to_sync
-from django.conf import settings
-from core.models import Context, Entity  # Import models for org check
-from django.db.models import Q
-import uuid
+from asgiref.sync import sync_to_async
+from core.models import Context  # Import models for org check
+
+logger = logging.getLogger(__name__)
 
 class ContextConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Get context_id from URL
         context_id = self.scope['url_route']['kwargs'].get('context_id')
         user = self.scope.get('user')
+        logger.error(f"[WS] User {user} connecting to context {context_id}")
+
         if not user or not user.is_authenticated:
+            logger.warning("[WS] User not authenticated, closing with code 4001")
             await self.close(code=4001)
             return
         # Try to find the context and check org
         try:
-            # Get the context and prefetch entities and their organizations
-            context = await async_to_sync(Context.objects.prefetch_related('entities').get)(id=context_id)
-            # Get all organizations for entities in this context
-            entity_org_ids = set()
-            for entity in context.entities.all():
-                entity_org_ids.add(str(entity.organization_id))
-            # User must own the org of all entities (or at least one, depending on your policy)
-            if str(user.organization_id) not in entity_org_ids:
+            user_org = await sync_to_async(lambda: user.organization)()
+            user_org_id = str(user_org.id)
+            context = await sync_to_async(Context.objects.prefetch_related('organization').get)(id=context_id)
+            context_org = await sync_to_async(lambda: context.organization)()
+            context_org_id = str(context_org.id) if context_org else None
+            if not user_org or not context_org_id or user_org_id != context_org_id:
+                logger.warning(f"[WS] User org mismatch: user.org={user.organization.id}, context.org={context_org_id}. Closing with 4003.")
                 await self.close(code=4003)
                 return
         except Context.DoesNotExist:
+            logger.error(f"[WS] Context with id={context_id} does not exist. Closing with 4040.")
             await self.close(code=4040)
             return
         except Exception as e:
+            logger.exception(f"[WS] Exception while fetching context: {e}. Closing with 4000.")
             await self.close(code=4000)
             return
         # Generate a safe, unique group name for this connection
         self.group_name = f"context_{context_id}"
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
+        # logger.info(f"[WS] WebSocket connection accepted for group {self.group_name}")
+
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+        pass
+        # group_name = getattr(self, 'group_name', None)
+        # if group_name is not None:
+        #     await self.channel_layer.group_discard(group_name, self.channel_name)
+        #     logger.info(f"[WS] Disconnected channel {self.channel_name} from group {group_name}")
+        # else:
+        #     logger.warning(f"[WS] disconnect() called but self.group_name is not set! Channel: {self.channel_name}")
 
-    async def receive(self, text_data=None, bytes_data=None):
-        data = json.loads(text_data)
-        text = data.get("text", "")
-        # Send to celery task (fire and forget)
-        await self.send(text_data=json.dumps({"status": "starting", "message": f"Received: {text[:10]}..."}))
 
-    async def stream_message(self, event):
-        # Called by celery worker through channel layer
-        await self.send(text_data=json.dumps({"status": event["status"], "message": event["message"]}))
+    async def context_update_message(self, event):
+        """
+        Used to send messages about any updates related to the context. 
+
+        event is a dict.
+
+        Event should include status, message, type, and
+        potentially match_id if the event is related to a match.
+        """
+        await self.send(text_data=json.dumps(event))

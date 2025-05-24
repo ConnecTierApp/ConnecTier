@@ -4,6 +4,7 @@ from django.conf import settings
 from celery import shared_task
 from mistralai import Mistral
 from .models import Context, Entity, Match
+from channels.layers import get_channel_layer
 import logging
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,12 @@ Please make sure you follow the following format for your response:
 
 @shared_task
 def match_entities(context_id: str):
+    # send message using context_update_message group send
+    group_name = f"context_{context_id}"
+    channel_layer = get_channel_layer()
+    channel_layer.group_send(group_name, {"type": "context_update_message", "status": "info", "message": "Matching entities..."})
+
+
     context = Context.objects.get(id=context_id)
     context_by_type = {}
     for entity in context.entities.all():
@@ -60,6 +67,10 @@ def match_two_entities(context_id: str, mentor_id: str, startup_id: str):
     mentor = Entity.objects.get(id=mentor_id)
     startup_id = Entity.objects.get(id=startup_id)
     context = Context.objects.get(id=context_id)
+
+    channel_layer = get_channel_layer()
+    group_name = f"context_{context_id}"
+    channel_layer.group_send(group_name, {"type": "context_update_message", "status": "info", "message": "Testing match between mentor {mentor.name} and startup {startup_id.name}"})
     
     if Match.object.exists(mentor=mentor, startup=startup_id, context=context):
         logger.info(f"Match already exists for mentor {mentor.name} and startup {startup_id.name} in context {context.name}")
@@ -79,10 +90,13 @@ def match_two_entities(context_id: str, mentor_id: str, startup_id: str):
         
     response_content = response.choices[0].message.content
     parsed_response = parse_response_json(response_content)
-    Match.objects.create(
+    score = parsed_response["score"]
+    reasoning = parsed_response["reasoning"]
+    match = Match.objects.create(
         context=context,
         mentor=mentor,
         startup=startup_id,
-        score=parsed_response["score"],
-        reasoning=parsed_response["reasoning"]
+        score=score,
+        reasoning=reasoning
     )
+    channel_layer.group_send(group_name, {"type": "context_update_message", "status": "info", "message": f"Match between mentor {mentor.name} and startup {startup_id.name} created with score {score}. Reason: \n{reasoning}", "match_id": match.id})

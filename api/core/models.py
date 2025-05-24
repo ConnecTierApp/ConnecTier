@@ -20,6 +20,9 @@ class BaseModel(models.Model):
 
 class Organization(BaseModel):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
     
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
@@ -81,6 +84,9 @@ class Entity(BaseModel):
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=64, choices=EntityType.choices)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='entities')
+
+    def __str__(self):
+        return f"{self.name} ({self.type})"
     
     class Meta:
         verbose_name_plural = "entities"
@@ -90,6 +96,9 @@ class Context(BaseModel):
     name = models.CharField(max_length=255)
     prompt = models.TextField()
     entities = models.ManyToManyField(Entity, related_name='contexts')
+
+    def __str__(self):
+        return self.name
 
 class Match(BaseModel):
     class MatchScore(models.TextChoices):
