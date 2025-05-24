@@ -23,7 +23,8 @@ Please make sure you follow the following format for your response:
 
 
 @shared_task
-def match_entities(context: Context):
+def match_entities(context_id: str):
+    context = Context.objects.get(id=context_id)
     context_by_type = {}
     for entity in context.entities.all():
         if entity.type not in context_by_type:

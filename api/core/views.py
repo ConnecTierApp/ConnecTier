@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import datetime, timedelta
 import logging
 from functools import wraps
+from .tasks import match_entities
 
 logger = logging.getLogger(__name__)
 
@@ -193,6 +194,7 @@ class ContextCreateView(View):
             return JsonResponse({'error': 'At least one entity of each type (startup and mentor) is required.'}, status=400)
         context = Context.objects.create(name=name, prompt=prompt)
         context.entities.set(entities)
+        match_entities.delay(str(context.id))
         return JsonResponse({'success': True, 'context_id': str(context.id)}, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
