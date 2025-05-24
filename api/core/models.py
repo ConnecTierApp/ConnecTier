@@ -1,3 +1,105 @@
 from django.db import models
+from django.contrib.auth.models import (
+    AbstractUser,
+    BaseUserManager,
+)
 
-# Create your models here.
+class BaseModel(models.Model):
+    """
+    Abstract base model that provides common fields for all models.
+    """
+    id = models.UUIDField(primary_key=True, editable=False, help_text="A unique identifier for the record.")
+    created_at = models.DateTimeField(auto_now_add=True, help_text="The date and time when the record was created.")
+    updated_at = models.DateTimeField(auto_now=True, help_text="The date and time when the record was last updated.")
+
+    class Meta:
+        abstract = True
+        ordering = ['-created_at']  # Default ordering by creation date descending
+
+class Organization(BaseModel):
+    name = models.CharField(max_length=255)
+    
+class UserProfileManager(BaseUserManager):
+    """Manager for user profiles"""
+
+    def create_user(self, email, password=None):
+        """Create a new user profile"""
+        if not email:
+            raise ValueError("User must have an email address")
+
+        email = self.normalize_email(email)
+        user = self.model(email=email, password=password)
+
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, email, password):
+        """Create a new superuser profile"""
+        user = self.create_user(email, password)
+        user.is_superuser = True
+        user.is_staff = True
+
+        user.save(using=self._db)
+
+        return user
+
+class UserProfile(AbstractUser, BaseModel):
+    """Database model for users in the system"""
+
+    username = None
+    email = models.EmailField(max_length=255, unique=True)
+
+    objects = UserProfileManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        """Return string representation of our user"""
+        return self.email
+    
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='users')
+    
+    # Add role field if needed
+    # role = models.CharField(max_length=64)
+    
+
+class Entity(BaseModel):
+    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=64)  # e.g. 'startup', 'mentor'
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='entities')
+
+class Context(BaseModel):
+    name = models.CharField(max_length=255)
+    prompt = models.TextField()
+    entities = models.ManyToManyField(Entity, related_name='contexts')
+
+class Match(BaseModel):
+    context = models.ForeignKey(Context, on_delete=models.CASCADE, related_name='matches')
+    startup = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='startup_matches')
+    mentor = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='mentor_matches')
+    
+    # Uncomment if you want to store scores and justifications
+    # score = models.FloatField()
+    # justification = models.TextField()
+
+class Message(BaseModel):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='messages')
+    timestamp = models.DateTimeField()
+    sender = models.CharField(max_length=64)  # e.g. 'system', 'llm'
+    content = models.TextField()
+
+class Document(BaseModel):
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='documents')
+    type = models.CharField(max_length=64)  # e.g. 'transcript', 'pdf'
+    content = models.TextField()
+
+class Chunk(BaseModel):
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='chunks')
+    content = models.TextField()
+
+class Embedding(BaseModel):
+    vector = models.JSONField()  # array<float>
+    chunk = models.OneToOneField(Chunk, on_delete=models.CASCADE, related_name='embedding')
