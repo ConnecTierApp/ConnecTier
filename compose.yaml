@@ -16,6 +16,7 @@ services:
   api:
     build:
       context: ./api
+    domainname: api.connectier.app
     command: daphne -b 0.0.0.0 -p 8000 config.asgi:application
     ports:
       - "8000:8000"
@@ -48,6 +49,7 @@ services:
       context: ./ui
       args:
         - NEXT_PUBLIC_API_URL=http://localhost:8000
+    domainname: connectier.app
     command: "npm run start"
     ports:
       - "3000:3000"
