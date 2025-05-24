@@ -1,14 +1,13 @@
 # Dockerfile for Django API/Worker
-FROM python:3.11-slim
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-COPY . .
+# Copy the project into the image
+ADD . /app
+RUN uv sync --locked
 
 RUN chmod +x run.sh
 

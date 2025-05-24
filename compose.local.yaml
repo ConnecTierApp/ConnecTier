@@ -32,7 +32,7 @@ services:
     command: sh -c "pip install watchdog && watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A config worker -l info"
     environment:
       DJANGO_SETTINGS_MODULE: config.settings
-      DATABASE_URL: postgres://user:password@postgres:5432/app_db
+      DATABASE_URL: postgres://user:password@postgres:5432/app_db?sslmode=disable
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
@@ -48,11 +48,6 @@ services:
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_API_URL: http://localhost:8000
-
-  llm:
-    extends:
-      file: compose.yaml
-      service: llm
 
 volumes:
   pgdata:
