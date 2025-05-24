@@ -2,7 +2,6 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.conf import settings
-from .tasks import crewai_hello_task
 
 import uuid
 
@@ -20,7 +19,6 @@ class EchoConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         text = data.get("text", "")
         # Send to celery task (fire and forget)
-        crewai_hello_task.delay(text, self.group_name)
         await self.send(text_data=json.dumps({"status": "starting", "message": f"Received: {text[:10]}..."}))
 
     async def stream_message(self, event):

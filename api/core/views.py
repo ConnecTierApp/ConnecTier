@@ -248,6 +248,7 @@ class EntityDetailView(View):
             'type': entity.type,
             'organization_id': str(entity.organization.id),
             'document_ids': [str(doc.id) for doc in entity.documents.all()],
+            'context_ids': [str(context.id) for context in entity.contexts.all()],
             'created_at': entity.created_at.isoformat(),
         }, status=200)
 

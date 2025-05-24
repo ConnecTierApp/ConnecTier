@@ -4,52 +4,61 @@ import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Building, Users, Plus, Trash2, Eye } from 'lucide-react';
+import { useApi } from '@/hooks/use-api';
+import { Loader2 } from 'lucide-react';
+import { Alert } from '@/components/ui/alert';
 
-interface EntityData {
-  id: string;
+interface Entity {
+  entity_id: string;
   name: string;
   type: string;
-  updatedAt: string;
+  organization: string;
+  documentIds: string[];
+  contextIds: string[];
+  createdAt: string;
 }
-
-// Sample data for demonstration
-const sampleStartups: EntityData[] = [
-  { id: 'startup-1', name: 'Verdanta', type: 'startup', updatedAt: 'May 24, 2025' },
-  { id: 'startup-2', name: 'NeuralCore', type: 'startup', updatedAt: 'May 23, 2025' },
-  { id: 'startup-3', name: 'Quantify', type: 'startup', updatedAt: 'May 22, 2025' },
-];
-
-const sampleMentors: EntityData[] = [
-  { id: 'mentor-1', name: 'Dr. Faisal', type: 'mentor', updatedAt: 'May 24, 2025' },
-  { id: 'mentor-2', name: 'Claire Dupont', type: 'mentor', updatedAt: 'May 23, 2025' },
-  { id: 'mentor-3', name: 'Evan Kim', type: 'mentor', updatedAt: 'May 22, 2025' },
-];
 
 export const EntitiesList: React.FC = () => {
   const searchParams = useSearchParams();
   const entityType = searchParams.get('type') || 'all';
+  const { data: entitiesResponse, error, isLoading } = useApi<{ results: Entity[] }>(
+    `/entities?type=${entityType}`
+  );
+  const entities = entitiesResponse?.results;
   
   // Filter entities based on type parameter
-  let entities: EntityData[] = [];
   let pageTitle = 'All Entities';
   let pageDescription = 'List of all entities in the system';
   let createButtonText = 'Create New Entity';
   let entityTypeIcon = null;
   
   if (entityType === 'startup') {
-    entities = sampleStartups;
     pageTitle = 'Startups';
     pageDescription = 'List of all Startups';
     createButtonText = 'Add New Startup';
     entityTypeIcon = <Building className="h-5 w-5" />;
   } else if (entityType === 'mentor') {
-    entities = sampleMentors;
     pageTitle = 'Mentors';
     pageDescription = 'List of all Mentors';
     createButtonText = 'Add New Mentor';
     entityTypeIcon = <Users className="h-5 w-5" />;
   } else {
-    entities = [...sampleStartups, ...sampleMentors];
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Loader2 className="h-5 w-5 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Alert />
+      </div>
+    );
   }
 
   return (
@@ -98,13 +107,13 @@ export const EntitiesList: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="[&_tr:last-child]:border-0">
-                {entities.length > 0 ? entities.map((entity) => (
+                {entities && entities.length > 0 ? entities.map((entity) => (
                   <tr
-                    key={entity.id}
+                    key={entity.entity_id}
                     className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
                   >
                     <td className="p-4 align-middle">
-                      <Link href={`/entities/${entity.id}`} className="font-medium hover:underline">
+                      <Link href={`/entities/${entity.entity_id}`} className="font-medium hover:underline">
                         {entity.name}
                       </Link>
                     </td>
@@ -114,12 +123,12 @@ export const EntitiesList: React.FC = () => {
                       </td>
                     )}
                     <td className="p-4 align-middle">
-                      {entity.updatedAt}
+                      {entity.createdAt}
                     </td>
                     <td className="p-4 align-middle">
                       <div className="flex items-center gap-2">
                         <Link 
-                          href={`/entities/${entity.id}`}
+                          href={`/entities/${entity.entity_id}`}
                           className="inline-flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
                         >
                           <Eye className="h-4 w-4" />
@@ -137,7 +146,7 @@ export const EntitiesList: React.FC = () => {
                 )) : (
                   <tr>
                     <td colSpan={entityType === 'all' ? 4 : 3} className="p-4 text-center text-muted-foreground">
-                      No entities found.
+                      Nothing found.
                     </td>
                   </tr>
                 )}

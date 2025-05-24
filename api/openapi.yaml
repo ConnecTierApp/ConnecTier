@@ -364,6 +364,11 @@ paths:
                         items:
                           type: string
                           format: uuid
+                      context_ids:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
         "401":
           description: Unauthorized
         "404":

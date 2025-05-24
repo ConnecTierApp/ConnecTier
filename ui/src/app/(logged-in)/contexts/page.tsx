@@ -15,7 +15,7 @@ function ContextsPage() {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Your Contexts</h2>
           <button className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
-            Create New Context
+            Create New Cohort
           </button>
         </div>
         

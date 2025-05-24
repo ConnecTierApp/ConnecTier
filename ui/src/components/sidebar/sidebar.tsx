@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { LucideIcon, Users, Building, Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -35,6 +35,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 export const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const entityType = searchParams.get('type') || 'all';
   
   return (
     <aside className="fixed left-0 top-16 z-10 h-[calc(100vh-4rem)] w-64 border-r border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -47,18 +49,18 @@ export const Sidebar: React.FC = () => {
                 href="/entities?type=startup" 
                 icon={Building} 
                 title="Startups" 
-                isActive={pathname.includes('/entities') && pathname.includes('startup')}
+                isActive={pathname.includes('/entities') && entityType === 'startup'}
               />
               <SidebarItem 
                 href="/entities?type=mentor" 
                 icon={Users} 
                 title="Mentors" 
-                isActive={pathname.includes('/entities') && pathname.includes('mentor')}
+                isActive={pathname.includes('/entities') && entityType === 'mentor'}
               />
               <SidebarItem 
                 href="/contexts" 
                 icon={Layers} 
-                title="Contexts" 
+                title="Cohorts" 
                 isActive={pathname.includes('/contexts')}
               />
             </nav>
