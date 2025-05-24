@@ -1,9 +1,30 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Navigation */}
+      <nav className="absolute w-full z-10 py-4 px-6">
+        <div className="flex justify-between items-center max-w-7xl mx-auto">
+          <div className="flex items-center gap-3">
+            <Image 
+              src="/logo.png" 
+              alt="ConnecTier Logo" 
+              width={40} 
+              height={40} 
+              className="rounded-md"
+            />
+            <span className="text-xl font-bold text-indigo-600">ConnecTier</span>
+          </div>
+          <div className="flex gap-6">
+            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">Sign In</Link>
+            <Link href="/register" className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">Get Started</Link>
+          </div>
+        </div>
+      </nav>
+      
       {/* Hero Section */}
       <div className="relative isolate overflow-hidden pt-14">
         <div className="absolute inset-0 -z-10 opacity-30">
@@ -37,7 +58,17 @@ export default function Home() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
             <div className="lg:col-span-7">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                <span className="text-indigo-600">ConnecTier</span>: Smarter Matches for Startup Growth
+                <div className="flex items-center gap-3 mb-2">
+                  <Image 
+                    src="/logo.png" 
+                    alt="ConnecTier Logo" 
+                    width={56} 
+                    height={56} 
+                    className="rounded-md"
+                  />
+                  <span className="text-indigo-600">ConnecTier</span>
+                </div>
+                Smarter Matches for Startup Growth
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 Incubators and accelerators thrive on the right connections — but manually matching startups to the right mentors wastes time and limits potential.
@@ -241,10 +272,20 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white">
         <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
-          <div className="flex justify-center space-x-6 md:order-2">
+          <div className="flex items-center justify-center space-x-6 md:order-2">
             <span className="text-sm text-gray-500">© 2025 ConnecTier, Inc. All rights reserved.</span>
           </div>
-          <div className="mt-8 md:order-1 md:mt-0">
+          <div className="mt-8 md:order-1 md:mt-0 flex flex-col items-center">
+            <div className="flex items-center gap-2 mb-3">
+              <Image 
+                src="/logo.png" 
+                alt="ConnecTier Logo" 
+                width={24} 
+                height={24} 
+                className="rounded-sm"
+              />
+              <span className="text-sm font-semibold text-gray-700">ConnecTier</span>
+            </div>
             <p className="text-center text-xs leading-5 text-gray-500">
               Powering the next generation of startup-mentor connections.
             </p>

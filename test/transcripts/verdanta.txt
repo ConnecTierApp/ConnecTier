@@ -1,0 +1,113 @@
+\[00:00:00] Bob: Hello Amina, Jonas, thanks for joining this call today.
+\[00:00:02] Amina: Hi Bob, happy to be here.
+\[00:00:04] Jonas: Thanks Bob, great to connect.
+\[00:00:06] Bob: Let’s kick off with quick introductions. Amina, tell me your background and role.
+\[00:00:10] Amina: Sure, I’m Amina Khalid, co‑founder and Chief Environmental Officer at Verdanta. I’ve spent the last ten years working in climate modeling, greenhouse gas accounting, and environmental policy advising large enterprises on carbon reduction strategies.
+\[00:00:20] Bob: And Jonas?
+\[00:00:22] Jonas: I’m Jonas Meier, co‑founder and CTO at Verdanta. I have a background as a full‑stack developer and cloud architect. I’ve built distributed systems for fintech and healthtech, then pivoted to apply serverless AWS stacks for real‑time data analytics, focusing on low latency, high throughput use cases.
+\[00:00:36] Bob: Great. Can you each describe what inspired you to start Verdanta?
+\[00:00:39] Amina: Absolutely. I saw first‑hand how companies struggled to get accurate carbon data. Their reporting was manual and error‑prone. I wanted to fuse rigorous science with scalable technology, so enterprises could trust their emissions insights without endless spreadsheets.
+\[00:00:58] Jonas: For me, it was about tackling a big problem with cutting‑edge cloud patterns. Serverless lets you handle unpredictable loads without hefty infrastructure commitments, which is perfect for infrequent but massive data spikes from satellite imagery, on‑site sensors, and cloud service logs.
+\[00:01:16] Bob: How did you two meet and decide to work together?
+\[00:01:19] Amina: We met at a sustainability hackathon in Berlin 2019. I brought environmental domain expertise while Jonas pitched a prototype for real‑time processing via AWS Lambda. We collaborated side by side for forty‑eight hours, realized the idea had market potential, and stayed in touch afterwards.
+\[00:01:40] Jonas: Right. We spent the next six months in evenings and weekends building a proof of concept. A mini Lambda pipeline at first, then gradually integrating more data sources. By early 2020, we had a demo solid enough that a couple of angel investors agreed to fund our seed round.
+\[00:02:01] Bob: Excellent. Let’s talk about Verdanta’s mission in one sentence.
+\[00:02:04] Amina: We build a real‑time CO₂ tracking and analytics platform for enterprises to pinpoint industrial emissions sources and guide reduction strategies.
+\[00:02:13] Jonas: And we combine sensor feeds, cloud consumption logs, on‑site emissions testing results, and manual inputs into unified dashboards, automated alerts, and executive summaries so teams can act quickly.
+\[00:02:27] Bob: Who are your primary customers today?
+\[00:02:30] Amina: Manufacturing and logistics companies that have to report under evolving global ESG regulations and need granular transparency in operations across multiple facilities.
+\[00:02:41] Jonas: We also pilot with large tech firms exploring Scope 3 emissions, helping them track energy use in data centers and supply chain vendors for more accurate carbon footprints.
+\[00:02:52] Bob: How do you acquire these customers?
+\[00:02:54] Amina: Through targeted industry conferences, speaking slots at GreenTech EU and Sustainable Supply Chain forums, referrals from university research partnerships, and a small outbound SDR team focusing on European markets.
+\[00:03:09] Jonas: We also publish white papers on carbon accounting best practices, which drives inbound leads from mid‑market companies looking for compliance tools.
+\[00:03:18] Bob: Walk me through your tech stack and any pain points.
+\[00:03:21] Jonas: We ingest data via API Gateway, trigger Lambda functions for normalization, write raw and aggregated data to DynamoDB with multi‑region tables, use Kinesis streams feeding EMR Spark clusters for nightly batch analytics, and our frontend is built in React with a Node.js GraphQL API layer. We use Terraform for infrastructure as code and GitHub Actions for CI/CD.
+\[00:03:51] Bob: What happens when load spikes?
+\[00:03:53] Jonas: Under heavy sensor bursts or multi‑site ingestion events, Lambda concurrency limits throttle, DynamoDB provisioned throughput peaks, and dashboards can lag by up to ten seconds or even timeout. We sometimes see sporadic throttling during morning and evening sensor reporting windows.
+\[00:04:14] Bob: Are you using on‑demand or provisioned capacity?
+\[00:04:16] Jonas: We switched to provisioned for cost predictability and compliance with internal budgets, but our auto‑scaling rules are reactive and slow to catch sudden bursts beyond configured thresholds.
+\[00:04:27] Bob: How do you handle monitoring and alerting?
+\[00:04:29] Jonas: We use CloudWatch alarms on Lambda errors, DynamoDB throttle metrics, and Kinesis consumer lag, pushed into PagerDuty for on‑call notifications. Our thresholds are manually tuned, which makes maintenance labor‑intensive and error‑prone.
+\[00:04:47] Bob: Have you looked at DynamoDB adaptive capacity or reserved concurrency?
+\[00:04:50] Jonas: Adaptive capacity is enabled by default, but it doesn’t catch multi‑region sudden spikes quickly enough. We reserved some concurrency for critical functions but coverage is incomplete and cold starts still occur.
+\[00:05:02] Bob: What about cold starts?
+\[00:05:04] Jonas: Cold starts add two to three seconds latency. We trialed provisioned concurrency for key functions, but the costs scaled linearly with usage. We’re now exploring GraalVM native images and custom runtimes to minimize initialization overhead.
+\[00:05:21] Bob: Interesting. Amina, from a product standpoint, what features are most critical now?
+\[00:05:24] Amina: We’re prioritizing three areas: predictive emissions forecasting using time‑series and weather data, collaborative workflows so cross‑functional teams can annotate insights, and seamless BI integrations with Tableau, Power BI, and Looker. These will transform raw emissions data into actionable intelligence.
+\[00:05:46] Bob: Are those in your roadmap?
+\[00:05:48] Amina: Yes, forecasting is slated for next quarter, collaboration features and BI connectors for Q3, and an open API developer portal for Q4 to improve extensibility.
+\[00:06:00] Bob: How do you validate data accuracy?
+\[00:06:02] Amina: We maintain our own carbon factor database, cross‑checked weekly against DEFRA, EPA, and IEA standards. During onboarding, we run a three‑week calibration phase comparing incoming data to actual meter readings and third‑party audit logs.
+\[00:06:20] Jonas: Discrepancies surface in the UI with colored flags and anomaly detection, allowing customers to validate or override data before finalizing their compliance reports.
+\[00:06:35] Bob: Let’s discuss business gaps. What commercial help do you need?
+\[00:06:39] Amina: We need introductions to C‑level decision‑makers in mining and oil & gas firms across the GCC and MENA regions, as procurement cycles in these sectors can last twelve to eighteen months and rely heavily on trusted relationships.
+\[00:06:58] Bob: Got it. Any feedback from pilot customers on UX?
+\[00:07:01] Amina: They appreciate the depth and granularity but say the dashboard is overwhelming for non‑technical stakeholders. They want a simple executive view with drill‑downs for analysts.
+\[00:07:14] Jonas: We’ve launched an A/B test of a streamlined UI profile with pre‑configured summary widgets. Early metrics show a 30% reduction in time to generate weekly reports and increased adoption by site managers.
+\[00:07:32] Bob: Pricing model—how are you charging?
+\[00:07:34] Amina: Our pricing is a hybrid of per‑event usage, capped at a monthly threshold to avoid runaway costs, plus a fixed annual license fee tiered by company size and number of facilities.
+\[00:07:49] Jonas: We also offer premium add‑ons, like white‑label reporting modules and custom SLA support with dedicated account management.
+\[00:07:59] Bob: And how have customers reacted to pricing?
+\[00:08:01] Amina: Tier‑one enterprises value the precision and don’t mind usage‑based costs. Mid‑market companies push back, so we’re piloting a flat‑fee entry tier with limited event volume and a lower feature set.
+\[00:08:18] Bob: Let’s cover milestones. What are your top three for the next six months?
+\[00:08:21] Jonas: Technically, eliminate cold starts under one second for core pipelines, implement proactive auto‑scaling rules using predictive metrics, and shrink nightly batch windows from two hours to fifteen minutes.
+\[00:08:40] Amina: Commercially, convert two pilot programs into paid contracts, secure a mining or oil & gas customer in the GCC, and complete a compelling Series A investor deck.
+\[00:08:58] Bob: How many team members do you have and what roles?
+\[00:09:01] Amina: We have six full‑time employees: two environmental analysts, two senior developers, one data engineer, and one product manager, plus contractors specializing in UI/UX design and QA testing.
+\[00:09:20] Jonas: Post‑Series A, we plan to add two backend engineers, one front‑end engineer, a sales lead focused on enterprise accounts, and expand our data science capabilities.
+\[00:09:33] Bob: What’s your current burn rate and runway?
+\[00:09:36] Amina: We burn approximately \$120,000 per month, with eight months of runway remaining after our recent seed extension. We’re mindful of runway and prioritizing high‑impact hires.
+\[00:09:51] Bob: Any plans for fundraising in the next quarter?
+\[00:09:53] Amina: Yes, we aim to raise a \$5 million Series A by Q4 to scale development, marketing, and international expansion.
+\[00:10:03] Bob: On security and compliance, how are you handling data privacy?
+\[00:10:06] Jonas: We’re ISO 27001 certified in process, data at rest is encrypted via AWS KMS, in transit uses TLS 1.2 or higher, and we rotate keys every ninety days. Access control is managed through IAM roles and least privilege principles.
+\[00:10:27] Bob: Good. Any concerns around GDPR or other regional regulations?
+\[00:10:30] Amina: GDPR compliance is baked into our EU deployments. We’re auditing for upcoming CSRD requirements in 2026 and mapping data flows to ensure all regional carbon reporting regulations are met.
+\[00:10:51] Bob: What integrations are on your radar?
+\[00:10:53] Jonas: SAP S/4HANA logs, Oracle Cloud Infrastructure usage data, Prometheus‑style metrics for custom on‑site sensors, and direct integration with IoT gateways for compressor and boiler telemetry.
+\[00:11:12] Amina: We also plan Slack and Microsoft Teams alerts for sustainability KPIs, and are exploring integrations with major ERP systems for automated emission compliance workflows.
+\[00:11:31] Bob: Let’s talk support. How do you handle incidents?
+\[00:11:33] Jonas: We run weekly on‑call rotations among engineers. Critical incidents trigger our incident management runbook, with a root cause analysis within 48 hours and action items tracked in Jira.
+\[00:11:52] Amina: We offer a 24‑hour SLA for dashboard outages and a 72‑hour SLA for feature requests. Customers have a dedicated Slack channel for support and quarterly business reviews to ensure satisfaction.
+\[00:12:12] Bob: If you could have one ideal mentor on the tech side, what would they bring?
+\[00:12:15] Jonas: Someone with deep enterprise serverless expertise who’s orchestrated tens of millions of events daily with near‑zero cold start latency, built resilient auto‑scaling frameworks, and optimized cost and performance at scale.
+\[00:12:40] Bob: And on the commercial side?
+\[00:12:42] Amina: A C‑suite executive from the mining or oil & gas sector with government and regulatory relationships, who can accelerate procurement approvals and open doors to pilot programs with major state‑owned enterprises.
+\[00:13:03] Bob: How do you measure success with your current customers?
+\[00:13:05] Amina: We track reduction in reported emissions year over year, user engagement metrics like dashboard logins, time saved in report generation, and Net Promoter Score. All customers see on average a 12% reduction in forecasted emissions after six months.
+\[00:13:29] Jonas: We also track system reliability metrics—99.9% uptime SLA—and customer satisfaction tickets closed within SLA windows.
+\[00:13:42] Bob: Tell me more about your data modeling for predictive forecasting.
+\[00:13:45] Jonas: We use LSTM neural networks combined with gradient boosting models. We input time series data from sensors, weather forecasts, production schedules, and historical emissions factors to predict daily and weekly emission trends with an 85% accuracy rate.
+\[00:14:12] Amina: The predictive module surfaces alerts when deviations exceed defined thresholds, enabling proactive optimization of operations—like adjusting HVAC cycles or shifting high‑energy tasks to off‑peak periods.
+\[00:14:32] Bob: Have you validated these forecasts with pilot customers?
+\[00:14:35] Amina: Yes, we ran a three‑month pilot with a logistics firm. Their operations team used our forecasts to reschedule diesel fleet deployment and reduced fuel consumption by 8%, aligning within our error margins.
+\[00:14:58] Bob: Let’s explore your partner ecosystem. Who do you collaborate with?
+\[00:15:00] Amina: We partner with sensor manufacturers, environmental consultancies, and regional IoT system integrators to provide turnkey solutions. We also team with renewable energy firms to recommend offsets and onsite generation options.
+\[00:15:23] Jonas: Our technology integrations include AWS, Azure IoT Hub, and Google Cloud Pub/Sub for maximum interoperability.
+\[00:15:35] Bob: How do you train customers during onboarding?
+\[00:15:37] Amina: We run a two‑week onboarding workshop, including data mapping, calibration sessions, and hands‑on dashboard training, followed by bi‑weekly check‑ins and performance reviews in the first three months.
+\[00:15:56] Jonas: We also provide a self‑service knowledge base with tutorials, API docs, and best practice guides for advanced users.
+\[00:16:10] Bob: Have you considered a certification program for partners?
+\[00:16:13] Amina: Yes, we’re designing a Verdanta Certified Implementer program to standardize deployments through consulting firms and integrators, ensuring high‑quality setups globally.
+\[00:16:31] Bob: What’s your churn rate and how do you mitigate churn?
+\[00:16:34] Amina: Our annual churn is 5%. We mitigate through dedicated customer success managers, quarterly ROI reviews, and co‑development of custom features to align with strategic goals.
+\[00:16:56] Jonas: We also monitor usage patterns and proactively reach out when engagement dips below defined thresholds.
+\[00:17:07] Bob: Tell me about your marketing channels. What’s most effective?
+\[00:17:09] Amina: Thought leadership blogs, white papers, case studies, targeted LinkedIn ads, and participation in industry roundtables. Joint webinars with partners have generated high‑quality leads with 20% conversion rates.
+\[00:17:32] Bob: Do you leverage customer referrals?
+\[00:17:34] Amina: Yes, we run a referral incentive program offering service credits. It’s driven 15% of new business in the last year.
+\[00:17:47] Bob: How do you prioritize feature requests from customers?
+\[00:17:49] Amina: Our product manager uses a scoring model based on strategic alignment, effort, and customer impact. High‑score features go into the next quarterly sprint.
+\[00:18:07] Jonas: We maintain a public roadmap and run quarterly user advisory board meetings to align priorities.
+\[00:18:21] Bob: What regulatory standards are you preparing for?
+\[00:18:24] Amina: We support GHG Protocol Scope 1, 2, and 3. We’re designing for CSRD compliance in 2026, and also mapping to frameworks like SASB and TCFD for investor reporting.
+\[00:18:45] Bob: Finally, what are your key KPIs for the next year?
+\[00:18:48] Amina: Customer count growth to twenty‑five enterprise clients, average engagement time per user to five hours per week, and average reduction in emissions reported by clients to at least 10% within twelve months.
+\[00:19:12] Jonas: On the tech side, maintain 99.9% uptime, cut average API response times below 200 milliseconds, and support a minimum of five million daily ingestion events smoothly.
+\[00:19:33] Bob: That’s incredibly detailed, thank you both. I’ll use this to match you with mentors covering technical scaling, strategic partnerships, compliance, predictive analytics, and executive‑level introductions.
+\[00:19:53] Amina: Thanks Bob, we appreciate it.
+\[00:19:55] Jonas: Thank you, Bob, looking forward to the matches.
+\[00:19:58] Bob: Great. I’ll circulate the mentorship proposals by end of week. Talk soon.
+\[00:20:02] Amina: Perfect, thanks Bob.
+\[00:20:04] Jonas: Thanks Bob, bye.
+\[00:20:06] Bob: Bye everyone.
