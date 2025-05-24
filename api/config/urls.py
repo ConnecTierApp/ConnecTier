@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView, EntityListView, ContextCreateView, ContextListView, ContextDetailView, EntityDetailView, ProfileView, DocumentCreateView, DocumentDetailView
+from django.http import HttpResponse
 
 urlpatterns = [
+    path('', lambda request: HttpResponse("OK", status=200)),
     path('admin/', admin.site.urls),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
