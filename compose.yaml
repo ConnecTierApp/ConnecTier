@@ -23,9 +23,8 @@ services:
       - postgres
       - redis
     environment:
-      POSTGRES_PASSWORD: password
       DJANGO_SETTINGS_MODULE: config.settings
-      DATABASE_URL: postgres://user:password@postgres:5432/app_db?sslmode=disable
+      DATABASE_URL: postgres://user:${POSTGRES_PASSWORD}@postgres:5432/app_db?sslmode=require
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
@@ -39,7 +38,7 @@ services:
       - redis
     environment:
       DJANGO_SETTINGS_MODULE: config.settings
-      DATABASE_URL: postgres://user:password@postgres:5432/app_db?sslmode=disable
+      DATABASE_URL: postgres://user:${POSTGRES_PASSWORD}@postgres:5432/app_db?sslmode=require
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0

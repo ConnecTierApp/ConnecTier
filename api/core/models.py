@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import (
     AbstractUser,
@@ -8,7 +10,7 @@ class BaseModel(models.Model):
     """
     Abstract base model that provides common fields for all models.
     """
-    id = models.UUIDField(primary_key=True, editable=False, help_text="A unique identifier for the record.")
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, help_text="A unique identifier for the record.")
     created_at = models.DateTimeField(auto_now_add=True, help_text="The date and time when the record was created.")
     updated_at = models.DateTimeField(auto_now=True, help_text="The date and time when the record was last updated.")
 
@@ -22,22 +24,27 @@ class Organization(BaseModel):
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
 
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, organization=None):
         """Create a new user profile"""
         if not email:
             raise ValueError("User must have an email address")
 
         email = self.normalize_email(email)
         user = self.model(email=email, password=password)
+        
+        if not organization:
+            # If no organization is provided, create a default one
+            organization = Organization.objects.create(name="Default Organization")
+        user.organization = organization
 
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password, organization=None):
         """Create a new superuser profile"""
-        user = self.create_user(email, password)
+        user = self.create_user(email, password, organization)
         user.is_superuser = True
         user.is_staff = True
 
