@@ -91,13 +91,19 @@ class Context(BaseModel):
     entities = models.ManyToManyField(Entity, related_name='contexts')
 
 class Match(BaseModel):
+    class MatchScore(models.TextChoices):
+        POOR = 'poor', 'Poor'
+        FAIR = 'fair', 'Fair'
+        GOOD = 'good', 'Good'
+        EXCELLENT = 'excellent', 'Excellent'
+    
     context = models.ForeignKey(Context, on_delete=models.CASCADE, related_name='matches')
     startup = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='startup_matches')
     mentor = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='mentor_matches')
     
     # Uncomment if you want to store scores and justifications
-    # score = models.FloatField()
-    # justification = models.TextField()
+    score = models.CharField(choices=MatchScore.choices, max_length=10, null=True)
+    reasoning = models.TextField(null=True)
 
 class Message(BaseModel):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='messages')
