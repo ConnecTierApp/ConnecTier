@@ -1,117 +1,117 @@
-\[00:00:00] Bob: Hello Diego, thanks for joining this call today.
-\[00:00:02] Diego: Hi Bob, great to chat with you.
-\[00:00:04] Bob: Let’s start with a brief introduction. Diego, tell me your background and role at AgroMorph.
-\[00:00:09] Diego: Sure. I’m Diego Peña, founder and CEO of AgroMorph. I have a PhD in agronomy from Universidad Nacional Agraria in Honduras and spent seven years working on crop disease management across Latin America before starting this venture.
-\[00:00:21] Bob: Fantastic. Can you share what inspired you to launch AgroMorph?
-\[00:00:25] Diego: Absolutely. During my field assignments, I saw how smallholder farmers lacked early warnings for disease outbreaks. Satellite imagery and ground sensors were underutilized. I wanted to merge remote sensing and AI to give producers actionable predictions before diseases spread.
-\[00:00:42] Bob: And AgroMorph’s mission in a nutshell?
-\[00:00:45] Diego: We provide a remote sensing and machine learning platform that predicts crop disease outbreaks up to two weeks in advance, enabling farmers and agribusinesses to take preventative measures and reduce yield losses.
-\[00:00:58] Bob: How did you build your initial prototype?
-\[00:01:00] Diego: In mid-2020, I partnered with a satellite data provider to access historical NDVI and thermal imagery. I spent several months cleaning the data, then trained a random forest classifier on labeled disease event records from cooperative farms in Argentina.
-\[00:01:18] Bob: How did you secure that initial dataset?
-\[00:01:20] Diego: I collaborated with two agricultural cooperatives who agreed to share disease survey logs and adjacent weather station data under a pilot research agreement, in exchange for free early access to predictions.
-\[00:01:35] Bob: Great. Who are your primary customers today?
-\[00:01:37] Diego: Right now, we focus on mid-size agribusinesses managing large wheat and soybean operations in Brazil and Argentina. We also have an ongoing pilot with a coffee cooperative in Kenya.
-\[00:01:53] Bob: How are you acquiring these customers?
-\[00:01:55] Diego: Through partnerships with agricultural consultants and regional agri-insurance firms. They introduce us to their clients as part of advisory services. We’ve also done workshops at AgriTech Summit São Paulo.
-\[00:02:11] Bob: And what is your pricing model?
-\[00:02:13] Diego: We charge a subscription per hectare per season, with volume discounts for operations above 10,000 hectares. We include unlimited alerts and basic support, with optional premium consulting for integration.
-\[00:02:27] Bob: Let’s dig into your tech stack. How does your platform work?
-\[00:02:30] Diego: We ingest daily satellite imagery from Sentinel-2, weather data from public APIs, and on-site sensor feeds via LoRaWAN gateways. Our data pipeline runs in GCP using Dataflow for streaming ingestion and BigQuery for storage.
-\[00:02:49] Bob: And the machine learning side?
-\[00:02:51] Diego: We use a combination of convolutional neural networks for image feature extraction and gradient boosting models for prediction. We preprocess imagery to normalize for cloud cover and atmospheric effects, then feed derived indices into our models.
-\[00:03:10] Bob: What challenges have you faced with data quality?
-\[00:03:13] Diego: Cloud cover in tropical regions blocks up to 30% of images. We built a gap-filling algorithm using spatiotemporal interpolation and auxiliary weather data to impute missing NDVI values.
-\[00:03:28] Bob: How accurate are your predictions today?
-\[00:03:30] Diego: On wheat rust events, we achieve around 85% precision and 80% recall with a five-day lead time. We’re constantly refining hyperparameters and exploring LSTM sequences for better temporal context.
-\[00:03:47] Bob: Are you training models in-house or using managed services?
-\[00:03:50] Diego: We train in-house on GPUs spun up in GCP AI Platform. We’re exploring Vertex AI to manage pipeline orchestration and model monitoring at scale.
-\[00:04:04] Bob: How about deployment? How do farmers consume predictions?
-\[00:04:07] Diego: We send alerts via SMS and WhatsApp for critical warnings. We also maintain a web dashboard built in Angular that shows risk maps and recommended interventions, accessible to agronomy teams.
-\[00:04:22] Bob: Do you integrate with farm management systems?
-\[00:04:24] Diego: We’re integrating with FMS platforms like Granular and AgroVision via REST APIs so users can trigger spray drones or irrigation adjustments directly from their planning tools.
-\[00:04:40] Bob: Let’s discuss commercialization. What are your sales channels?
-\[00:04:42] Diego: Direct sales through our regional reps in Brazil and Argentina, partnerships with equipment manufacturers, and referral programs with agri-insurers who reduce premium rates when clients use our preventive alerts.
-\[00:04:59] Bob: What conversion rates are you seeing from pilots to paid contracts?
-\[00:05:02] Diego: About 40% of pilots convert within three months. The main barrier is demonstrating ROI on pesticide savings and yield improvements consistently.
-\[00:05:17] Bob: Have you quantified ROI for customers?
-\[00:05:19] Diego: Yes. In our largest pilot, a 20,000-hectare wheat farm reported a 12% reduction in fungicide usage and a 5% yield increase compared to control fields, translating to a net gain of \$120 per hectare.
-\[00:05:38] Bob: Impressive. Let’s talk team and structure. How many staff do you have?
-\[00:05:41] Diego: We have eight full-time team members: three data scientists, two backend engineers, one frontend developer, one agronomy specialist, and one operations manager. We contract satellite preprocessing to a third party.
-\[00:06:00] Bob: What’s your burn rate and runway?
-\[00:06:02] Diego: Our burn is around \$150,000 per month with six months of runway after our recent pre-seed extension. We’re being disciplined with pilot expenses and cloud costs.
-\[00:06:15] Bob: Are you fundraising soon?
-\[00:06:17] Diego: Yes, we plan a \$3 million Seed round in Q3 to expand our team, improve data pipelines, and support additional crops like corn and rice.
-\[00:06:29] Bob: From a product standpoint, what features are top priority?
-\[00:06:32] Diego: Improving the user interface with customizable alert thresholds, adding multi-crop support, and building a mobile app for on-field agronomists with offline mode.
-\[00:06:46] Bob: How do you gather user feedback?
-\[00:06:48] Diego: We run monthly user interviews, maintain a feature request board voted on by customers, and monitor usage metrics in Mixpanel to see which dashboards and alerts get the most engagement.
-\[00:07:05] Bob: What gaps do you need mentorship on?
-\[00:07:08] Diego: Technically, we need expertise on scaling GCP data pipelines and productionizing ML models with continual retraining. Commercially, we want introductions to large agribusiness executives and agri-insurance underwriters.
-\[00:07:29] Bob: Any regulatory or compliance issues?
-\[00:07:31] Diego: Not many in agriculture, but we’re mindful of data privacy for farm locations and yield data under Argentina’s digital rights laws and soon under Brazil’s LGPD.
-\[00:07:46] Bob: What’s your competitive landscape?
-\[00:07:48] Diego: Competitors include Granular Insights and Bayer’s 'Climate FieldView'. We differentiate by focusing on disease prediction at scale and integrating local ground sensor networks.
-\[00:08:04] Bob: How do you defend against larger players?
-\[00:08:07] Diego: We build strong regional partnerships, offer white-label solutions to integrators, and maintain agility by iterating on model performance faster than big players.
-\[00:08:23] Bob: Tell me about your data security practices.
-\[00:08:25] Diego: We encrypt data at rest in GCS with AES-256, in transit via HTTPS/TLS, and use IAM roles and VPC Service Controls to restrict access. We’re planning SOC 2 Type II certification.
-\[00:08:45] Bob: What KPIs do you track?
-\[00:08:47] Diego: Key metrics include prediction accuracy, average time to alert delivery, pilot conversion rate, customer retention, monthly recurring revenue, and cost per prediction.
-\[00:09:04] Bob: Which metric concerns you most right now?
-\[00:09:06] Diego: Our pilot conversion rate. We need to improve our onboarding flow and demonstrate ROI faster to push that above 60%.
-\[00:09:20] Bob: What integrations are next on your roadmap?
-\[00:09:22] Diego: Integration with drone-based spray management systems, soil moisture sensor networks, and ERP platforms like SAP Agriculture and Oracle AgTech.
-\[00:09:39] Bob: How do you support customers when issues arise?
-\[00:09:41] Diego: We offer a 48-hour SLA for critical issues via email and phone, with a dedicated Slack channel. Our operations manager coordinates all support tickets in Zendesk.
-\[00:09:57] Bob: What would an ideal technical mentor bring?
-\[00:10:00] Diego: Deep expertise in GCP data engineering, experience building real-time ML pipelines for high-throughput data, and guidance on cost optimization.
-\[00:10:15] Bob: And a commercial mentor?
-\[00:10:17] Diego: A senior executive from a major agricultural machinery or agri-insurance firm who can open doors to enterprise pilots and underwriting partnerships.
-\[00:10:30] Bob: That’s great. Let’s talk partnerships. Who are your current partners and what value do they bring?
-\[00:10:35] Diego: We partner with satellite data providers like Planet Labs for high-resolution imagery, regional IoT hardware vendors for ground sensor networks, and consultancy firms offering agronomic advice to bundle our predictions into their services.
-\[00:10:50] Bob: How do these partnerships impact your business development and revenue?
-\[00:10:54] Diego: They drive co-marketing opportunities and introduce us to large clients. For example, our partnership with AgroConsult Brazil led to a pilot with one of the top five sugarcane producers in São Paulo state.
-\[00:11:10] Bob: Have you built any channel sales or reseller agreements?
-\[00:11:13] Diego: Yes, we have three reseller agreements in Latin America, where partners sell AgroMorph under their brand, paying us a percentage of subscription revenue. It’s early but promising.
-\[00:11:29] Bob: Good. Switching to competitive edge: how do you stay ahead in ML innovation?
-\[00:11:33] Diego: We maintain a research pipeline, publishing in journals, and we run weekly hackathons for our data science team to prototype new architectures, such as attention-based models for spatiotemporal forecasting.
-\[00:11:55] Bob: Interesting. What’s your release cadence for model updates?
-\[00:11:58] Diego: We retrain our models monthly with fresh data and push new versions through a canary deployment in Vertex AI, monitoring performance drift and rollback if accuracy drops.
-\[00:12:12] Bob: Let’s cover support and operations. How do you scale customer support as you grow?
-\[00:12:16] Diego: We use Zendesk for ticketing with tiered support levels. We’re building chatbots with our NLP models to answer FAQs, and plan to hire two customer success managers after the Seed round.
-\[00:12:36] Bob: How do you handle incident response for data pipeline failures?
-\[00:12:39] Diego: We have an on-call rotation managed via PagerDuty for our engineering team, with runbooks detailing immediate triage steps, followed by a root cause analysis within 24 hours.
-\[00:12:58] Bob: From a regulatory standpoint, what data governance practices do you enforce?
-\[00:13:02] Diego: We anonymize location data by grid cell, purge raw sensor data after 90 days, and maintain audit logs for data access compliance under LGPD and upcoming pan-Latin data privacy regulations.
-\[00:13:24] Bob: What’s your approach to sustainability in your own operations?
-\[00:13:27] Diego: We offset our cloud carbon footprint using AWS’s carbon footprint tool, partner with reforestation projects in Central America, and ensure our offices run on renewable energy credits.
-\[00:13:46] Bob: Turning to KPIs again, what customer success metrics do you prioritize?
-\[00:13:50] Diego: We track time to value (days from onboarding to first actionable alert), change in pesticide costs, yield variance improvements, and customer satisfaction via NPS surveys.
-\[00:14:07] Bob: What NPS score have you seen so far?
-\[00:14:09] Diego: Our NPS is currently 32, which is good for B2B SaaS in agriculture, but we aim to push that above 40 by improving our onboarding and UX.
-\[00:14:24] Bob: How do you use customer feedback to drive product improvements?
-\[00:14:27] Diego: We tie NPS comments to our feature backlog, categorize requests by impact, and run quarterly roadmap reviews with our advisory board comprising key pilot customers.
-\[00:14:47] Bob: Let’s dive into unit economics. What’s your LTV\:CAC ratio?
-\[00:14:50] Diego: Our LTV\:CAC is approximately 4:1. We’ve optimized CAC by focusing on channel partnerships and content marketing, keeping CAC around \$1,200 per customer and average contract value at \$18,000 annually.
-\[00:15:14] Bob: How long is your sales cycle?
-\[00:15:16] Diego: On average, six to nine months for enterprise deals and three to four months for mid-market. We’re streamlining the process with clear ROI case studies and prequalified leads from partners.
-\[00:15:35] Bob: What’s your churn rate?
-\[00:15:37] Diego: Annual churn sits at 8%, driven mainly by small cooperatives with budget constraints. We’re tackling that with tailored pricing for smaller operations.
-\[00:15:53] Bob: Any plans for international expansion?
-\[00:15:56] Diego: We’re targeting East Africa next, with pilots planned in Kenya and Uganda. We’re in discussions with local agri-incubators for logistics and data collection support.
-\[00:16:13] Bob: How will you adapt your models for new geographies?
-\[00:16:16] Diego: We’ll recalibrate our gap-filling and feature normalization algorithms for local crop cycles and weather patterns, working with local agronomists to label new data.
-\[00:16:34] Bob: Excellent. What’s your vision for AgroMorph in five years?
-\[00:16:38] Diego: We aim to be the global leader in predictive agritech, covering ten key crops worldwide, integrating with all major farm management systems, and powering autonomous intervention systems via drones and robots.
-\[00:17:02] Bob: How do you plan to fund that growth?
-\[00:17:05] Diego: Through a Series A in 2026 and Series B in 2028, targeting \$25 million total funding to build out R\&D, global partnerships, and sales teams.
-\[00:17:23] Bob: Finally, what’s the biggest risk you foresee?
-\[00:17:26] Diego: The biggest risk is data drift—changes in satellite imaging, weather anomalies, or evolving disease strains that could degrade model performance. We’re investing in automated drift detection to mitigate that.
-\[00:17:49] Bob: Thank you, Diego. This comprehensive overview gives us exactly what we need to match you with mentors focused on GCP scaling, ML ops, agribusiness partnerships, insurance, and global expansion.
-\[00:18:07] Diego: Thanks, Bob. I appreciate the detail.
-\[00:18:09] Bob: I’ll send over mentorship proposals by end of week. Talk soon.
-\[00:18:11] Diego: Perfect, looking forward to it.
-\[00:18:13] Bob: Thanks everyone, goodbye.
-\[00:18:15] Diego: Bye Bob.
-\[00:18:17] Bob: End of interview.
+[00:00:00] Bob: Hello Diego, thanks for joining this call today.
+[00:00:02] Diego: Hi Bob, great to chat with you.
+[00:00:04] Bob: Let’s start with a brief introduction. Diego, tell me your background and role at AgroMorph.
+[00:00:09] Diego: Sure. I’m Diego Peña, founder and CEO of AgroMorph. I have a PhD in agronomy from Universidad Nacional Agraria in Honduras and spent seven years working on crop disease management across Latin America before starting this venture.
+[00:00:21] Bob: Fantastic. Can you share what inspired you to launch AgroMorph?
+[00:00:25] Diego: Absolutely. During my field assignments, I saw how smallholder farmers lacked early warnings for disease outbreaks. Satellite imagery and ground sensors were underutilized. I wanted to merge remote sensing and AI to give producers actionable predictions before diseases spread.
+[00:00:42] Bob: And AgroMorph’s mission in a nutshell?
+[00:00:45] Diego: We provide a remote sensing and machine learning platform that predicts crop disease outbreaks up to two weeks in advance, enabling farmers and agribusinesses to take preventative measures and reduce yield losses.
+[00:00:58] Bob: How did you build your initial prototype?
+[00:01:00] Diego: In mid-2020, I partnered with a satellite data provider to access historical NDVI and thermal imagery. I spent several months cleaning the data, then trained a random forest classifier on labeled disease event records from cooperative farms in Argentina.
+[00:01:18] Bob: How did you secure that initial dataset?
+[00:01:20] Diego: I collaborated with two agricultural cooperatives who agreed to share disease survey logs and adjacent weather station data under a pilot research agreement, in exchange for free early access to predictions.
+[00:01:35] Bob: Great. Who are your primary customers today?
+[00:01:37] Diego: Right now, we focus on mid-size agribusinesses managing large wheat and soybean operations in Brazil and Argentina. We also have an ongoing pilot with a coffee cooperative in Kenya.
+[00:01:53] Bob: How are you acquiring these customers?
+[00:01:55] Diego: Through partnerships with agricultural consultants and regional agri-insurance firms. They introduce us to their clients as part of advisory services. We’ve also done workshops at AgriTech Summit São Paulo.
+[00:02:11] Bob: And what is your pricing model?
+[00:02:13] Diego: We charge a subscription per hectare per season, with volume discounts for operations above 10,000 hectares. We include unlimited alerts and basic support, with optional premium consulting for integration.
+[00:02:27] Bob: Let’s dig into your tech stack. How does your platform work?
+[00:02:30] Diego: We ingest daily satellite imagery from Sentinel-2, weather data from public APIs, and on-site sensor feeds via LoRaWAN gateways. Our data pipeline runs in GCP using Dataflow for streaming ingestion and BigQuery for storage.
+[00:02:49] Bob: And the machine learning side?
+[00:02:51] Diego: We use a combination of convolutional neural networks for image feature extraction and gradient boosting models for prediction. We preprocess imagery to normalize for cloud cover and atmospheric effects, then feed derived indices into our models.
+[00:03:10] Bob: What challenges have you faced with data quality?
+[00:03:13] Diego: Cloud cover in tropical regions blocks up to 30% of images. We built a gap-filling algorithm using spatiotemporal interpolation and auxiliary weather data to impute missing NDVI values.
+[00:03:28] Bob: How accurate are your predictions today?
+[00:03:30] Diego: On wheat rust events, we achieve around 85% precision and 80% recall with a five-day lead time. We’re constantly refining hyperparameters and exploring LSTM sequences for better temporal context.
+[00:03:47] Bob: Are you training models in-house or using managed services?
+[00:03:50] Diego: We train in-house on GPUs spun up in GCP AI Platform. We’re exploring Vertex AI to manage pipeline orchestration and model monitoring at scale.
+[00:04:04] Bob: How about deployment? How do farmers consume predictions?
+[00:04:07] Diego: We send alerts via SMS and WhatsApp for critical warnings. We also maintain a web dashboard built in Angular that shows risk maps and recommended interventions, accessible to agronomy teams.
+[00:04:22] Bob: Do you integrate with farm management systems?
+[00:04:24] Diego: We’re integrating with FMS platforms like Granular and AgroVision via REST APIs so users can trigger spray drones or irrigation adjustments directly from their planning tools.
+[00:04:40] Bob: Let’s discuss commercialization. What are your sales channels?
+[00:04:42] Diego: Direct sales through our regional reps in Brazil and Argentina, partnerships with equipment manufacturers, and referral programs with agri-insurers who reduce premium rates when clients use our preventive alerts.
+[00:04:59] Bob: What conversion rates are you seeing from pilots to paid contracts?
+[00:05:02] Diego: About 40% of pilots convert within three months. The main barrier is demonstrating ROI on pesticide savings and yield improvements consistently.
+[00:05:17] Bob: Have you quantified ROI for customers?
+[00:05:19] Diego: Yes. In our largest pilot, a 20,000-hectare wheat farm reported a 12% reduction in fungicide usage and a 5% yield increase compared to control fields, translating to a net gain of $120 per hectare.
+[00:05:38] Bob: Impressive. Let’s talk team and structure. How many staff do you have?
+[00:05:41] Diego: We have eight full-time team members: three data scientists, two backend engineers, one frontend developer, one agronomy specialist, and one operations manager. We contract satellite preprocessing to a third party.
+[00:06:00] Bob: What’s your burn rate and runway?
+[00:06:02] Diego: Our burn is around $150,000 per month with six months of runway after our recent pre-seed extension. We’re being disciplined with pilot expenses and cloud costs.
+[00:06:15] Bob: Are you fundraising soon?
+[00:06:17] Diego: Yes, we plan a $3 million Seed round in Q3 to expand our team, improve data pipelines, and support additional crops like corn and rice.
+[00:06:29] Bob: From a product standpoint, what features are top priority?
+[00:06:32] Diego: Improving the user interface with customizable alert thresholds, adding multi-crop support, and building a mobile app for on-field agronomists with offline mode.
+[00:06:46] Bob: How do you gather user feedback?
+[00:06:48] Diego: We run monthly user interviews, maintain a feature request board voted on by customers, and monitor usage metrics in Mixpanel to see which dashboards and alerts get the most engagement.
+[00:07:05] Bob: What gaps do you need mentorship on?
+[00:07:08] Diego: Technically, we need expertise on scaling GCP data pipelines and productionizing ML models with continual retraining. Commercially, we want introductions to large agribusiness executives and agri-insurance underwriters.
+[00:07:29] Bob: Any regulatory or compliance issues?
+[00:07:31] Diego: Not many in agriculture, but we’re mindful of data privacy for farm locations and yield data under Argentina’s digital rights laws and soon under Brazil’s LGPD.
+[00:07:46] Bob: What’s your competitive landscape?
+[00:07:48] Diego: Competitors include Granular Insights and Bayer’s 'Climate FieldView'. We differentiate by focusing on disease prediction at scale and integrating local ground sensor networks.
+[00:08:04] Bob: How do you defend against larger players?
+[00:08:07] Diego: We build strong regional partnerships, offer white-label solutions to integrators, and maintain agility by iterating on model performance faster than big players.
+[00:08:23] Bob: Tell me about your data security practices.
+[00:08:25] Diego: We encrypt data at rest in GCS with AES-256, in transit via HTTPS/TLS, and use IAM roles and VPC Service Controls to restrict access. We’re planning SOC 2 Type II certification.
+[00:08:45] Bob: What KPIs do you track?
+[00:08:47] Diego: Key metrics include prediction accuracy, average time to alert delivery, pilot conversion rate, customer retention, monthly recurring revenue, and cost per prediction.
+[00:09:04] Bob: Which metric concerns you most right now?
+[00:09:06] Diego: Our pilot conversion rate. We need to improve our onboarding flow and demonstrate ROI faster to push that above 60%.
+[00:09:20] Bob: What integrations are next on your roadmap?
+[00:09:22] Diego: Integration with drone-based spray management systems, soil moisture sensor networks, and ERP platforms like SAP Agriculture and Oracle AgTech.
+[00:09:39] Bob: How do you support customers when issues arise?
+[00:09:41] Diego: We offer a 48-hour SLA for critical issues via email and phone, with a dedicated Slack channel. Our operations manager coordinates all support tickets in Zendesk.
+[00:09:57] Bob: What would an ideal technical mentor bring?
+[00:10:00] Diego: Deep expertise in GCP data engineering, experience building real-time ML pipelines for high-throughput data, and guidance on cost optimization.
+[00:10:15] Bob: And a commercial mentor?
+[00:10:17] Diego: A senior executive from a major agricultural machinery or agri-insurance firm who can open doors to enterprise pilots and underwriting partnerships.
+[00:10:30] Bob: That’s great. Let’s talk partnerships. Who are your current partners and what value do they bring?
+[00:10:35] Diego: We partner with satellite data providers like Planet Labs for high-resolution imagery, regional IoT hardware vendors for ground sensor networks, and consultancy firms offering agronomic advice to bundle our predictions into their services.
+[00:10:50] Bob: How do these partnerships impact your business development and revenue?
+[00:10:54] Diego: They drive co-marketing opportunities and introduce us to large clients. For example, our partnership with AgroConsult Brazil led to a pilot with one of the top five sugarcane producers in São Paulo state.
+[00:11:10] Bob: Have you built any channel sales or reseller agreements?
+[00:11:13] Diego: Yes, we have three reseller agreements in Latin America, where partners sell AgroMorph under their brand, paying us a percentage of subscription revenue. It’s early but promising.
+[00:11:29] Bob: Good. Switching to competitive edge: how do you stay ahead in ML innovation?
+[00:11:33] Diego: We maintain a research pipeline, publishing in journals, and we run weekly hackathons for our data science team to prototype new architectures, such as attention-based models for spatiotemporal forecasting.
+[00:11:55] Bob: Interesting. What’s your release cadence for model updates?
+[00:11:58] Diego: We retrain our models monthly with fresh data and push new versions through a canary deployment in Vertex AI, monitoring performance drift and rollback if accuracy drops.
+[00:12:12] Bob: Let’s cover support and operations. How do you scale customer support as you grow?
+[00:12:16] Diego: We use Zendesk for ticketing with tiered support levels. We’re building chatbots with our NLP models to answer FAQs, and plan to hire two customer success managers after the Seed round.
+[00:12:36] Bob: How do you handle incident response for data pipeline failures?
+[00:12:39] Diego: We have an on-call rotation managed via PagerDuty for our engineering team, with runbooks detailing immediate triage steps, followed by a root cause analysis within 24 hours.
+[00:12:58] Bob: From a regulatory standpoint, what data governance practices do you enforce?
+[00:13:02] Diego: We anonymize location data by grid cell, purge raw sensor data after 90 days, and maintain audit logs for data access compliance under LGPD and upcoming pan-Latin data privacy regulations.
+[00:13:24] Bob: What’s your approach to sustainability in your own operations?
+[00:13:27] Diego: We offset our cloud carbon footprint using AWS’s carbon footprint tool, partner with reforestation projects in Central America, and ensure our offices run on renewable energy credits.
+[00:13:46] Bob: Turning to KPIs again, what customer success metrics do you prioritize?
+[00:13:50] Diego: We track time to value (days from onboarding to first actionable alert), change in pesticide costs, yield variance improvements, and customer satisfaction via NPS surveys.
+[00:14:07] Bob: What NPS score have you seen so far?
+[00:14:09] Diego: Our NPS is currently 32, which is good for B2B SaaS in agriculture, but we aim to push that above 40 by improving our onboarding and UX.
+[00:14:24] Bob: How do you use customer feedback to drive product improvements?
+[00:14:27] Diego: We tie NPS comments to our feature backlog, categorize requests by impact, and run quarterly roadmap reviews with our advisory board comprising key pilot customers.
+[00:14:47] Bob: Let’s dive into unit economics. What’s your LTV\:CAC ratio?
+[00:14:50] Diego: Our LTV\:CAC is approximately 4:1. We’ve optimized CAC by focusing on channel partnerships and content marketing, keeping CAC around $1,200 per customer and average contract value at $18,000 annually.
+[00:15:14] Bob: How long is your sales cycle?
+[00:15:16] Diego: On average, six to nine months for enterprise deals and three to four months for mid-market. We’re streamlining the process with clear ROI case studies and prequalified leads from partners.
+[00:15:35] Bob: What’s your churn rate?
+[00:15:37] Diego: Annual churn sits at 8%, driven mainly by small cooperatives with budget constraints. We’re tackling that with tailored pricing for smaller operations.
+[00:15:53] Bob: Any plans for international expansion?
+[00:15:56] Diego: We’re targeting East Africa next, with pilots planned in Kenya and Uganda. We’re in discussions with local agri-incubators for logistics and data collection support.
+[00:16:13] Bob: How will you adapt your models for new geographies?
+[00:16:16] Diego: We’ll recalibrate our gap-filling and feature normalization algorithms for local crop cycles and weather patterns, working with local agronomists to label new data.
+[00:16:34] Bob: Excellent. What’s your vision for AgroMorph in five years?
+[00:16:38] Diego: We aim to be the global leader in predictive agritech, covering ten key crops worldwide, integrating with all major farm management systems, and powering autonomous intervention systems via drones and robots.
+[00:17:02] Bob: How do you plan to fund that growth?
+[00:17:05] Diego: Through a Series A in 2026 and Series B in 2028, targeting $25 million total funding to build out R&D, global partnerships, and sales teams.
+[00:17:23] Bob: Finally, what’s the biggest risk you foresee?
+[00:17:26] Diego: The biggest risk is data drift—changes in satellite imaging, weather anomalies, or evolving disease strains that could degrade model performance. We’re investing in automated drift detection to mitigate that.
+[00:17:49] Bob: Thank you, Diego. This comprehensive overview gives us exactly what we need to match you with mentors focused on GCP scaling, ML ops, agribusiness partnerships, insurance, and global expansion.
+[00:18:07] Diego: Thanks, Bob. I appreciate the detail.
+[00:18:09] Bob: I’ll send over mentorship proposals by end of week. Talk soon.
+[00:18:11] Diego: Perfect, looking forward to it.
+[00:18:13] Bob: Thanks everyone, goodbye.
+[00:18:15] Diego: Bye Bob.
+[00:18:17] Bob: End of interview.

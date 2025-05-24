@@ -31,6 +31,7 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DEBUG: "True"
       DJANGO_SECRET_KEY: django-insecure-nt!j#(2z3-x!rqmawyjw(q3y$9#rx1dfxk!w7(cmwf6kg%cb25
+      MISTRAL_API_KEY:
 
   worker:
     extends:
@@ -47,6 +48,7 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DEBUG: "True"
       DJANGO_SECRET_KEY: django-insecure-nt!j#(2z3-x!rqmawyjw(q3y$9#rx1dfxk!w7(cmwf6kg%cb25
+      MISTRAL_API_KEY:
 
   ui:
     extends:

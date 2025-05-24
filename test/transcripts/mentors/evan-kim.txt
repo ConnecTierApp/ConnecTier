@@ -1,99 +1,99 @@
-\[00:00:00] Bob: Hello Evan, thanks for taking the time. I’d like to hear about your background and how you mentor startups.
-\[00:00:05] Evan: Thanks Bob, happy to join. I’m Evan Kim, technical co-founder of an AI startup acquired by Adobe in 2022, now advising creator tools companies.
-\[00:00:14] Bob: Great. Can you describe your startup and acquisition journey?
-\[00:00:18] Evan: Sure. We built an AI-powered video editing assistant, raised a Series A in 2020, grew to 25 engineers, then Adobe acquired us for \$150M to integrate our tech into Premiere Pro.
-\[00:00:33] Bob: What were the key technical challenges you faced early on?
-\[00:00:37] Evan: Building scalable inference pipelines, optimizing ML models for real-time performance in desktop applications, and managing cross-platform integration.
-\[00:00:50] Bob: How did you solve scalability?
-\[00:00:52] Evan: We built a hybrid architecture—local model inference with optimized ONNX runtimes and cloud-based batch rendering for heavier tasks, balancing latency and cost.
-\[00:01:08] Bob: And cross-platform integration?
-\[00:01:11] Evan: We built native plugins for Windows and macOS using C++ SDKs, wrapped them with a common JS-based API layer, then maintained sync between desktop and cloud components.
-\[00:01:28] Bob: From a mentorship perspective, what’s your approach?
-\[00:01:31] Evan: I focus on product-market fit for creator workflows, optimizing ML ops, and building go-to-market partnerships with platforms like YouTube and TikTok.
-\[00:01:47] Bob: Let’s talk product-market fit. How did you validate your initial hypotheses?
-\[00:01:50] Evan: We ran closed beta with 50 power users, tracked task completion times, NPS, and iterated features such as auto-captioning, smart cuts, and style transfer until metrics improved.
-\[00:02:10] Bob: What metrics did you use?
-\[00:02:12] Evan: Time saved per edit, percentage of automated edits accepted without manual tweak, and weekly active usage among our pilot group.
-\[00:02:27] Bob: On ML ops, what infrastructure did you use?
-\[00:02:30] Evan: We used Kubernetes for model serving, auto-scaling GPU nodes on GCP, model versioning with MLflow, and continuous training pipelines triggered by new labeled data.
-\[00:02:50] Bob: Any pitfalls there?
-\[00:02:52] Evan: Managing spot instances for cost savings led to preemptions; we mitigated with checkpointing and fallback to CPU nodes.
-\[00:03:08] Bob: What recommendations do you give on GPU scaling?
-\[00:03:11] Evan: Use a mix of reserved and spot GPUs, implement horizontal autoscaling based on queue length and latency targets, and optimize batch sizes dynamically.
-\[00:03:31] Bob: Let’s shift to partnerships. How did you approach integrations with platforms?
-\[00:03:36] Evan: We built a partnership team that negotiated access to YouTube Content ID API and TikTok’s developer program, offered co-marketing, and provided SDKs for easy plugin integration.
-\[00:03:55] Bob: What made those partnerships successful?
-\[00:03:58] Evan: Clear mutual value—our AI features improved publish speed, while their developer support gave us early API access and featured us in their marketplaces.
-\[00:04:14] Bob: Can you share a specific partnership story?
-\[00:04:17] Evan: Sure, we partnered with a major MCN to co-launch an auto-highlighter feature. They provided usage data, we optimized highlights, and they promoted us to their 10k creators—tripling our active users.
-\[00:04:41] Bob: From a business model perspective, what worked?
-\[00:04:44] Evan: A freemium model with premium AI features behind a paywall, and revenue sharing on referrals from partner marketplaces.
-\[00:04:58] Bob: What challenges in creator monetization?
-\[00:05:01] Evan: Balancing free usage to drive virality while converting power users to paid plans; we used usage caps and feature gating to push upgrades.
-\[00:05:18] Bob: On developer relations, how did you structure outreach?
-\[00:05:21] Evan: We created developer docs, sample apps, ran hackathons, and offered support tiers, ensuring high-touch support for key partners.
-\[00:05:41] Bob: How important was community building?
-\[00:05:44] Evan: Crucial. We ran a Slack community, hosted monthly AMAs, and seeded community contributions to our open-source inference SDK.
-\[00:06:02] Bob: Let’s discuss product roadmap. How did you prioritize features?
-\[00:06:06] Evan: Based on weighted scoring: user impact, engineering effort, alignment with partner goals, and potential revenue lift, reviewed weekly by PM and exec team.
-\[00:06:28] Bob: What’s a feature you deprioritized that was tough to let go?
-\[00:06:32] Evan: Real-time style transfer in live streams—tech was cool, but low demand and high compute cost, so we shelved it for future waves.
-\[00:06:49] Bob: On funding, how many rounds and amounts?
-\[00:06:51] Evan: We raised \$10M Series A in 2020, \$25M Series B in 2021, and pitched investors on path to acquisition in late 2021.
-\[00:07:05] Bob: What were investor concerns?
-\[00:07:07] Evan: Model performance versus cost, pathway to scale beyond core user base, and stickiness of creator workflows.
-\[00:07:20] Bob: How did you address those?
-\[00:07:22] Evan: We presented pilot ROI from MCN partners, detailed GPU cost per user metrics, and showed retention curves improving with new features.
-\[00:07:41] Bob: Let’s cover team culture. How did you build culture in a remote-first team?
-\[00:07:45] Evan: Weekly all-hands with live demos, virtual team-building, hack weeks, and clear documentation culture—folksonomy wikis and playbooks.
-\[00:08:06] Bob: What were early hiring priorities?
-\[00:08:09] Evan: Two ML engineers with research-production expertise, one infra engineer, one product designer with UX experience in video.
-\[00:08:26] Bob: On performance management, any frameworks?
-\[00:08:29] Evan: We used OKRs at team and individual level, with quarterly check-ins, 360 reviews, and transparency in goal progress via dashboards.
-\[00:08:48] Bob: From a go-to-market perspective, what channels matter for creator tools?
-\[00:08:51] Evan: Platform marketplaces, creator influencer partnerships, and developer conferences like VidCon to demo live.
-\[00:09:09] Bob: How do you approach influencer partnerships?
-\[00:09:12] Evan: Identify mid-tier creators (50k–200k followers), provide free credits, co-create tutorials, and feature them in our product pipeline.
-\[00:09:31] Bob: Any metrics on those campaigns?
-\[00:09:34] Evan: We saw 15% uplift in signups post-campaign and 25% higher conversion rates from those referred codes.
-\[00:09:49] Bob: Let’s touch on metrics. What KPIs did you track daily?
-\[00:09:52] Evan: DAU/MAU ratios, average session length in the editor, convert-to-P0 metrics (trial to paid), and ARR growth velocity.
-\[00:10:11] Bob: On ARR, what growth rate did you hit?
-\[00:10:14] Evan: 4x year-over-year in ARR from launch to acquisition, driven by partner co-marketing and feature-driven upsells.
-\[00:10:30] Bob: Security—any considerations for creator data privacy?
-\[00:10:34] Evan: We encrypted projects at rest, provided user control over data retention, and complied with GDPR and CCPA for user-generated content.
-\[00:10:52] Bob: On compliance, any certifications?
-\[00:10:54] Evan: We achieved SOC 2 Type II compliance in early 2022 to reassure enterprise clients.
-\[00:11:08] Bob: How have you helped startups with compliance?
-\[00:11:11] Evan: I advise on building audit logs, data retention policies, and privacy by design in feature planning.
-\[00:11:28] Bob: Let’s discuss ramping support. How did you handle support as you scaled?
-\[00:11:31] Evan: Tiered support SLAs: email for free users, Slack and phone for paid. Hired CSRs and built knowledge base to reduce ticket volume.
-\[00:11:52] Bob: On churn, what drove churn and how to reduce?
-\[00:11:55] Evan: Churn driven by low usage; we built re-engagement email flows, in-app nudges for abandoned projects, and feature tutorials.
-\[00:12:16] Bob: Partnerships with enterprise? Did you pursue that?
-\[00:12:19] Evan: Yes, we did pilots with marketing agencies and broadcasters, offering seat licenses and enterprise features like SSO.
-\[00:12:36] Bob: Any funny stories from those pilots?
-\[00:12:39] Evan: One agency ran our tool in South America’s Carnaval live editing booth—real-time clips on big screens. It broke all latency promises but was great PR.
-\[00:12:58] Bob: How did you spin that PR?
-\[00:13:00] Evan: We created a case study video, showcased at Adobe MAX, and it led to inquiries from media outlets wanting similar live editing setups.
-\[00:13:17] Bob: On growth marketing, what channels were top performers?
-\[00:13:20] Evan: YouTube tutorial series drove organic signups, GitHub presence for our SDK drove dev interest, and niche forums like Reddit’s /r/VideoEditing.
-\[00:13:45] Bob: How about content partnerships?
-\[00:13:48] Evan: We co-produced tutorial playlists with professional editors, linking back to our free tier, boosting CTR by 18%.
-\[00:14:06] Bob: Let’s talk revenue models. Did you explore usage-based pricing?
-\[00:14:10] Evan: We evaluated pay-per-minute-of-processing pricing, but users preferred predictable subscriptions; we kept usage-based ancillaries for extra codecs.
-\[00:14:31] Bob: On R\&D, what percent of budget?
-\[00:14:34] Evan: We allocated 30% of revenue to R\&D to stay ahead on model improvements and integration features.
-\[00:14:52] Bob: What was your biggest technical debt?
-\[00:14:54] Evan: Early code spun up monolithic inference services; we refactored to microservices later but backlog was large.
-\[00:15:12] Bob: How did you manage that refactoring?
-\[00:15:14] Evan: We ran a six-month initiative, tied refactoring tasks to feature flags, and released in incremental slices to reduce risk.
-\[00:15:33] Bob: On team growth, did you hire remotely or locally?
-\[00:15:36] Evan: Mixed—core ML and infra in SF, front-end in Berlin, product in NYC. We used remote onboarding playbooks and annual meetups.
-\[00:15:54] Bob: How did you handle time zones?
-\[00:15:56] Evan: Core overlap windows, rotating call schedules, and async-first culture with documented decisions in Confluence.
-\[00:16:18] Bob: Finally, what advice would you give founders building creator tools?
-\[00:16:21] Evan: Deeply embed in creator workflows, prioritize low friction UX, build strong platform partnerships early, and instrument every feature with metrics.
-\[00:16:46] Bob: Thank you, Evan. This is exactly what we need for pairing startups needing ML ops, platform integrations, and go-to-market strategy.
-\[00:17:00] Evan: Glad to help, Bob.
-\[00:17:02] Bob: End of interview.
+[00:00:00] Bob: Hello Evan, thanks for taking the time. I’d like to hear about your background and how you mentor startups.
+[00:00:05] Evan: Thanks Bob, happy to join. I’m Evan Kim, technical co-founder of an AI startup acquired by Adobe in 2022, now advising creator tools companies.
+[00:00:14] Bob: Great. Can you describe your startup and acquisition journey?
+[00:00:18] Evan: Sure. We built an AI-powered video editing assistant, raised a Series A in 2020, grew to 25 engineers, then Adobe acquired us for $150M to integrate our tech into Premiere Pro.
+[00:00:33] Bob: What were the key technical challenges you faced early on?
+[00:00:37] Evan: Building scalable inference pipelines, optimizing ML models for real-time performance in desktop applications, and managing cross-platform integration.
+[00:00:50] Bob: How did you solve scalability?
+[00:00:52] Evan: We built a hybrid architecture—local model inference with optimized ONNX runtimes and cloud-based batch rendering for heavier tasks, balancing latency and cost.
+[00:01:08] Bob: And cross-platform integration?
+[00:01:11] Evan: We built native plugins for Windows and macOS using C++ SDKs, wrapped them with a common JS-based API layer, then maintained sync between desktop and cloud components.
+[00:01:28] Bob: From a mentorship perspective, what’s your approach?
+[00:01:31] Evan: I focus on product-market fit for creator workflows, optimizing ML ops, and building go-to-market partnerships with platforms like YouTube and TikTok.
+[00:01:47] Bob: Let’s talk product-market fit. How did you validate your initial hypotheses?
+[00:01:50] Evan: We ran closed beta with 50 power users, tracked task completion times, NPS, and iterated features such as auto-captioning, smart cuts, and style transfer until metrics improved.
+[00:02:10] Bob: What metrics did you use?
+[00:02:12] Evan: Time saved per edit, percentage of automated edits accepted without manual tweak, and weekly active usage among our pilot group.
+[00:02:27] Bob: On ML ops, what infrastructure did you use?
+[00:02:30] Evan: We used Kubernetes for model serving, auto-scaling GPU nodes on GCP, model versioning with MLflow, and continuous training pipelines triggered by new labeled data.
+[00:02:50] Bob: Any pitfalls there?
+[00:02:52] Evan: Managing spot instances for cost savings led to preemptions; we mitigated with checkpointing and fallback to CPU nodes.
+[00:03:08] Bob: What recommendations do you give on GPU scaling?
+[00:03:11] Evan: Use a mix of reserved and spot GPUs, implement horizontal autoscaling based on queue length and latency targets, and optimize batch sizes dynamically.
+[00:03:31] Bob: Let’s shift to partnerships. How did you approach integrations with platforms?
+[00:03:36] Evan: We built a partnership team that negotiated access to YouTube Content ID API and TikTok’s developer program, offered co-marketing, and provided SDKs for easy plugin integration.
+[00:03:55] Bob: What made those partnerships successful?
+[00:03:58] Evan: Clear mutual value—our AI features improved publish speed, while their developer support gave us early API access and featured us in their marketplaces.
+[00:04:14] Bob: Can you share a specific partnership story?
+[00:04:17] Evan: Sure, we partnered with a major MCN to co-launch an auto-highlighter feature. They provided usage data, we optimized highlights, and they promoted us to their 10k creators—tripling our active users.
+[00:04:41] Bob: From a business model perspective, what worked?
+[00:04:44] Evan: A freemium model with premium AI features behind a paywall, and revenue sharing on referrals from partner marketplaces.
+[00:04:58] Bob: What challenges in creator monetization?
+[00:05:01] Evan: Balancing free usage to drive virality while converting power users to paid plans; we used usage caps and feature gating to push upgrades.
+[00:05:18] Bob: On developer relations, how did you structure outreach?
+[00:05:21] Evan: We created developer docs, sample apps, ran hackathons, and offered support tiers, ensuring high-touch support for key partners.
+[00:05:41] Bob: How important was community building?
+[00:05:44] Evan: Crucial. We ran a Slack community, hosted monthly AMAs, and seeded community contributions to our open-source inference SDK.
+[00:06:02] Bob: Let’s discuss product roadmap. How did you prioritize features?
+[00:06:06] Evan: Based on weighted scoring: user impact, engineering effort, alignment with partner goals, and potential revenue lift, reviewed weekly by PM and exec team.
+[00:06:28] Bob: What’s a feature you deprioritized that was tough to let go?
+[00:06:32] Evan: Real-time style transfer in live streams—tech was cool, but low demand and high compute cost, so we shelved it for future waves.
+[00:06:49] Bob: On funding, how many rounds and amounts?
+[00:06:51] Evan: We raised $10M Series A in 2020, $25M Series B in 2021, and pitched investors on path to acquisition in late 2021.
+[00:07:05] Bob: What were investor concerns?
+[00:07:07] Evan: Model performance versus cost, pathway to scale beyond core user base, and stickiness of creator workflows.
+[00:07:20] Bob: How did you address those?
+[00:07:22] Evan: We presented pilot ROI from MCN partners, detailed GPU cost per user metrics, and showed retention curves improving with new features.
+[00:07:41] Bob: Let’s cover team culture. How did you build culture in a remote-first team?
+[00:07:45] Evan: Weekly all-hands with live demos, virtual team-building, hack weeks, and clear documentation culture—folksonomy wikis and playbooks.
+[00:08:06] Bob: What were early hiring priorities?
+[00:08:09] Evan: Two ML engineers with research-production expertise, one infra engineer, one product designer with UX experience in video.
+[00:08:26] Bob: On performance management, any frameworks?
+[00:08:29] Evan: We used OKRs at team and individual level, with quarterly check-ins, 360 reviews, and transparency in goal progress via dashboards.
+[00:08:48] Bob: From a go-to-market perspective, what channels matter for creator tools?
+[00:08:51] Evan: Platform marketplaces, creator influencer partnerships, and developer conferences like VidCon to demo live.
+[00:09:09] Bob: How do you approach influencer partnerships?
+[00:09:12] Evan: Identify mid-tier creators (50k–200k followers), provide free credits, co-create tutorials, and feature them in our product pipeline.
+[00:09:31] Bob: Any metrics on those campaigns?
+[00:09:34] Evan: We saw 15% uplift in signups post-campaign and 25% higher conversion rates from those referred codes.
+[00:09:49] Bob: Let’s touch on metrics. What KPIs did you track daily?
+[00:09:52] Evan: DAU/MAU ratios, average session length in the editor, convert-to-P0 metrics (trial to paid), and ARR growth velocity.
+[00:10:11] Bob: On ARR, what growth rate did you hit?
+[00:10:14] Evan: 4x year-over-year in ARR from launch to acquisition, driven by partner co-marketing and feature-driven upsells.
+[00:10:30] Bob: Security—any considerations for creator data privacy?
+[00:10:34] Evan: We encrypted projects at rest, provided user control over data retention, and complied with GDPR and CCPA for user-generated content.
+[00:10:52] Bob: On compliance, any certifications?
+[00:10:54] Evan: We achieved SOC 2 Type II compliance in early 2022 to reassure enterprise clients.
+[00:11:08] Bob: How have you helped startups with compliance?
+[00:11:11] Evan: I advise on building audit logs, data retention policies, and privacy by design in feature planning.
+[00:11:28] Bob: Let’s discuss ramping support. How did you handle support as you scaled?
+[00:11:31] Evan: Tiered support SLAs: email for free users, Slack and phone for paid. Hired CSRs and built knowledge base to reduce ticket volume.
+[00:11:52] Bob: On churn, what drove churn and how to reduce?
+[00:11:55] Evan: Churn driven by low usage; we built re-engagement email flows, in-app nudges for abandoned projects, and feature tutorials.
+[00:12:16] Bob: Partnerships with enterprise? Did you pursue that?
+[00:12:19] Evan: Yes, we did pilots with marketing agencies and broadcasters, offering seat licenses and enterprise features like SSO.
+[00:12:36] Bob: Any funny stories from those pilots?
+[00:12:39] Evan: One agency ran our tool in South America’s Carnaval live editing booth—real-time clips on big screens. It broke all latency promises but was great PR.
+[00:12:58] Bob: How did you spin that PR?
+[00:13:00] Evan: We created a case study video, showcased at Adobe MAX, and it led to inquiries from media outlets wanting similar live editing setups.
+[00:13:17] Bob: On growth marketing, what channels were top performers?
+[00:13:20] Evan: YouTube tutorial series drove organic signups, GitHub presence for our SDK drove dev interest, and niche forums like Reddit’s /r/VideoEditing.
+[00:13:45] Bob: How about content partnerships?
+[00:13:48] Evan: We co-produced tutorial playlists with professional editors, linking back to our free tier, boosting CTR by 18%.
+[00:14:06] Bob: Let’s talk revenue models. Did you explore usage-based pricing?
+[00:14:10] Evan: We evaluated pay-per-minute-of-processing pricing, but users preferred predictable subscriptions; we kept usage-based ancillaries for extra codecs.
+[00:14:31] Bob: On R&D, what percent of budget?
+[00:14:34] Evan: We allocated 30% of revenue to R&D to stay ahead on model improvements and integration features.
+[00:14:52] Bob: What was your biggest technical debt?
+[00:14:54] Evan: Early code spun up monolithic inference services; we refactored to microservices later but backlog was large.
+[00:15:12] Bob: How did you manage that refactoring?
+[00:15:14] Evan: We ran a six-month initiative, tied refactoring tasks to feature flags, and released in incremental slices to reduce risk.
+[00:15:33] Bob: On team growth, did you hire remotely or locally?
+[00:15:36] Evan: Mixed—core ML and infra in SF, front-end in Berlin, product in NYC. We used remote onboarding playbooks and annual meetups.
+[00:15:54] Bob: How did you handle time zones?
+[00:15:56] Evan: Core overlap windows, rotating call schedules, and async-first culture with documented decisions in Confluence.
+[00:16:18] Bob: Finally, what advice would you give founders building creator tools?
+[00:16:21] Evan: Deeply embed in creator workflows, prioritize low friction UX, build strong platform partnerships early, and instrument every feature with metrics.
+[00:16:46] Bob: Thank you, Evan. This is exactly what we need for pairing startups needing ML ops, platform integrations, and go-to-market strategy.
+[00:17:00] Evan: Glad to help, Bob.
+[00:17:02] Bob: End of interview.
