@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   postgres:
-    image: pgvector/pgvector:pg16
+    image: postgres:16
+    x-defang-postgres: true
     environment:
       POSTGRES_USER: user
       POSTGRES_DB: app_db
-      POSTGRES_PASSWORD: password
-    x-defang-postgres: true
+      POSTGRES_PASSWORD:
 
   redis:
     image: redis:6.2

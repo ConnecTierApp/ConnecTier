@@ -5,6 +5,7 @@ services:
     extends:
       service: postgres
       file: compose.yaml
+    image: pgvector/pgvector:pg16
     environment:
       POSTGRES_PASSWORD: password
     volumes:
