@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend Entities Overview (ConnecTier)
 
-## Getting Started
+This document provides an overview of the main entities used in the frontend of the ConnecTier project. It is intended to help frontend developers understand the system vocabulary, the purpose of each entity, and how these are exposed or referred to in the UI.
 
-First, run the development server:
+## 📦 Core Entities
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. **Organization**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* Represents the organization or user account that owns the data.
+* This is the top-level container for all data.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. **Context** (UI: **Cohort**)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Logical grouping of entities for a specific initiative or program.
+* Example: A specific incubator batch or mentorship round.
+* Shown to users as **Cohorts** in the UI.
 
-## Learn More
+### 3. **Entity**
 
-To learn more about Next.js, take a look at the following resources:
+* Abstract concept representing anything that can be matched (e.g. a startup, a mentor, a funder, etc.).
+* Each entity has:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  * A **type** (e.g. "Startup", "Mentor", etc.)
+  * A **profile** (attributes that describe the entity)
+* These are created at the **Organization** level and assigned to **Contexts**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. **EntityType**
 
-## Deploy on Vercel
+* Defines a category of entity (e.g. Startup, Mentor).
+* Used to group and manage attributes and display logic.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. **Attribute**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Defines the data fields associated with an entity type.
+* Example: For "Startup", attributes could be "Stage", "Industry", etc.
+
+### 6. **Match**
+
+* Represents a system-generated or user-approved pairing between two entities.
+* Each match includes metadata, such as who approved it and when.
+
+### 7. **Message**
+
+* Logs reasoning steps taken by the system (LLM) during the match generation process.
+* These are shown in a chat-like interface, often showing the bot talking to itself.
+
+## 📄 How These Appear in the UI
+
+| Backend Entity | UI Label                          | Description                                                  |
+| -------------- | --------------------------------- | ------------------------------------------------------------ |
+| Context        | Cohort                            | Represents a group of startups (or other entities)           |
+| Entity         | Entity (or Startup, Mentor, etc.) | User-facing based on type                                    |
+| Attribute      | Profile Fields                    | Shown in forms, cards, and detail views                      |
+| Match          | Match                             | Shown in match result lists and approval flows               |
+| Message        | Chat Log                          | Shown in a reasoning/explanation view (e.g. expandable chat) |
+
+## 🧠 Notes for Development
+
+* Always use the UI terms when referring to entities in user-facing components.
+* Keep type-specific logic abstracted via `EntityType` wherever possible.
+* When in doubt, check the backend API response shape or ask a team member.
+
+---
+
+Let this document evolve as more entities or renames happen in the system!
