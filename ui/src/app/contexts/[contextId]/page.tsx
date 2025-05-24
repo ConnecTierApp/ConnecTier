@@ -6,13 +6,11 @@ export const metadata = {
 };
 
 interface ContextPageProps {
-  params: {
-    contextId: string;
-  };
+  params: Promise<{ contextId: string }>;
 }
 
-export function ContextPage({ params }: ContextPageProps) {
-  const { contextId } = params;
+async function ContextPage({ params }: ContextPageProps) {
+  const { contextId } = await params;
 
   return (
     <div className="container mx-auto px-4 py-8">

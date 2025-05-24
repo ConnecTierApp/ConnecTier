@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { api } from '../api-client';
 import { AxiosError } from 'axios';
 
-export function RegisterPage() {
+function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',

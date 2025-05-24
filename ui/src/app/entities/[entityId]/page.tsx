@@ -6,13 +6,11 @@ export const metadata = {
 };
 
 interface EntityDetailPageProps {
-  params: {
-    entityId: string;
-  };
+  params: Promise<{ entityId: string }>;
 }
 
-export function EntityDetailPage({ params }: EntityDetailPageProps) {
-  const { entityId } = params;
+async function EntityDetailPage({ params }: EntityDetailPageProps) {
+  const { entityId } = await params;
 
   return (
     <div className="container mx-auto px-4 py-8">
