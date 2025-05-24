@@ -81,6 +81,9 @@ class Entity(BaseModel):
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=64, choices=EntityType.choices)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='entities')
+    
+    class Meta:
+        verbose_name_plural = "entities"
 
 class Context(BaseModel):
     name = models.CharField(max_length=255)

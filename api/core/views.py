@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 import json
-from core.models import UserProfile, Organization, Entity
+from core.models import UserProfile, Organization, Entity, Context
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -128,3 +128,136 @@ class EntityCreateView(View):
             'organization_id': str(entity.organization.id)
         }, status=201)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class EntityListView(View):
+    @login_required
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        entities = Entity.objects.filter(organization=user.organization)
+
+        # Filtering by created_after
+        created_after = request.GET.get('created_after')
+        if created_after:
+            try:
+                from django.utils.dateparse import parse_datetime
+                created_after_dt = parse_datetime(created_after)
+                if created_after_dt:
+                    entities = entities.filter(created_at__gt=created_after_dt)
+            except Exception:
+                pass  # Ignore invalid date
+
+        # Filtering by type
+        entity_type = request.GET.get('type')
+        if entity_type in dict(Entity.EntityType.choices):
+            entities = entities.filter(type=entity_type)
+
+        # Filtering by name (case-insensitive contains)
+        name = request.GET.get('name', '')
+        if name:
+            entities = entities.filter(name__icontains=name)
+
+        results = [
+            {
+                'entity_id': str(e.id),
+                'name': e.name,
+                'type': e.type,
+                'organization_id': str(e.organization.id),
+                'created_at': e.created_at.isoformat(),
+            }
+            for e in entities.order_by('-created_at')
+        ]
+        return JsonResponse({'results': results}, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextCreateView(View):
+    @login_required
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        data = json.loads(request.body.decode('utf-8'))
+        name = data.get('name')
+        prompt = data.get('prompt')
+        entity_ids = data.get('entity_ids', [])
+        if not isinstance(name, str) or not name:
+            return JsonResponse({'error': 'name is required.'}, status=400)
+        if not isinstance(prompt, str) or not prompt:
+            return JsonResponse({'error': 'prompt is required.'}, status=400)
+        if not isinstance(entity_ids, list) or not entity_ids:
+            return JsonResponse({'error': 'entity_ids must be a non-empty list.'}, status=400)
+        # Fetch entities and check organization
+        entities = list(Entity.objects.filter(id__in=entity_ids, organization=user.organization))
+        if len(entities) != len(entity_ids):
+            return JsonResponse({'error': 'Some of the provided entities were not found in our records.'}, status=404)
+        # Check at least 1 of each type
+        types = set(e.type for e in entities)
+        if 'startup' not in types or 'mentor' not in types:
+            return JsonResponse({'error': 'At least one entity of each type (startup and mentor) is required.'}, status=400)
+        context = Context.objects.create(name=name, prompt=prompt)
+        context.entities.set(entities)
+        return JsonResponse({'success': True, 'context_id': str(context.id)}, status=201)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextListView(View):
+    @login_required
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        contexts = Context.objects.filter(entities__organization=user.organization).distinct().order_by('-created_at')
+        results = [
+            {
+                'name': c.name,
+                'created_at': c.created_at.isoformat(),
+            }
+            for c in contexts
+        ]
+        return JsonResponse({'results': results}, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextDetailView(View):
+    @login_required
+    def get(self, request, context_id, *args, **kwargs):
+        user = request.user
+        context = Context.objects.filter(id=context_id, entities__organization=user.organization).distinct().first()
+        if not context:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        return JsonResponse({
+            'context_id': str(context.id),
+            'name': context.name,
+            'prompt': context.prompt,
+            'created_at': context.created_at.isoformat(),
+            'entities': [
+                {
+                    'entity_id': str(e.id),
+                    'name': e.name,
+                    'type': e.type,
+                } for e in context.entities.all()
+            ]
+        }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EntityDetailView(View):
+    @login_required
+    def get(self, request, entity_id, *args, **kwargs):
+        user = request.user
+        entity = Entity.objects.filter(id=entity_id, organization=user.organization).first()
+        if not entity:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        return JsonResponse({
+            'entity_id': str(entity.id),
+            'name': entity.name,
+            'type': entity.type,
+            'organization_id': str(entity.organization.id),
+            'created_at': entity.created_at.isoformat(),
+            'updated_at': entity.updated_at.isoformat(),
+        }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ProfileView(View):
+    @login_required
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return JsonResponse({
+            'user_id': str(user.id),
+            'email': user.email,
+            'organization_id': str(user.organization.id) if user.organization else None,
+            'organization_name': user.organization.name if user.organization else None,
+            'created_at': user.created_at.isoformat() if hasattr(user, 'created_at') else None,
+        }, status=200)
