@@ -1,4 +1,5 @@
 import { EntitiesList } from '@/components/entities/entities-list';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Entities | ConnecTier',
@@ -6,7 +7,9 @@ export const metadata = {
 };
 
 function EntitiesPage() {
-  return <EntitiesList />;
+  return <Suspense fallback={<div>Loading...</div>}>
+    <EntitiesList />
+  </Suspense>;
 }
 
 export default EntitiesPage;
