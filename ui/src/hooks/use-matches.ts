@@ -13,8 +13,15 @@ export interface Match {
   // Add more fields as needed based on your API response
 }
 
-export function useMatches(contextId: string, config?: SWRConfiguration) {
-  // Only fetch if contextId is present
-  const endpoint = contextId ? `/contexts/${contextId}/matches/` : null;
+// Accepts either a contextId or a full endpoint (with query params)
+export function useMatches(endpointOrContextId: string, config?: SWRConfiguration) {
+  let endpoint: string | null = null;
+  if (!endpointOrContextId) {
+    endpoint = null;
+  } else if (endpointOrContextId.startsWith('/contexts/')) {
+    endpoint = endpointOrContextId;
+  } else {
+    endpoint = `/contexts/${endpointOrContextId}/matches/`;
+  }
   return useApi<{ results: Match[] }>(endpoint, config);
 }
