@@ -2,12 +2,12 @@ import json
 import logging
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-from core.models import Context  # Import models for org check
 
 logger = logging.getLogger(__name__)
 
 class ContextConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        from core.models import Context  # Import models for org check
         context_id = self.scope['url_route']['kwargs'].get('context_id')
         user = self.scope.get('user')
         logger.error(f"[WS] User {user} connecting to context {context_id}")

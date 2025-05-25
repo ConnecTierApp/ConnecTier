@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { LucideIcon, Users, Building, Layers } from 'lucide-react';
@@ -33,7 +33,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   );
 };
 
-export const Sidebar: React.FC = () => {
+function InnerSidebar(){
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const entityType = searchParams.get('type') || 'all';
@@ -76,5 +76,13 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
     </aside>
+  );
+}
+
+export function Sidebar() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <InnerSidebar />
+    </Suspense>
   );
 };

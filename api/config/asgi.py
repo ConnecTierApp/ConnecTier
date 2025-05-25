@@ -21,11 +21,9 @@ import core.routing
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AsgiJWTAuthMiddleware(
-        AuthMiddlewareStack(
+    "websocket": AuthMiddlewareStack(
             URLRouter(
                 core.routing.websocket_urlpatterns
             )
         )
-    ),
 })

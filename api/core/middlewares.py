@@ -4,7 +4,6 @@ from django.utils.deprecation import MiddlewareMixin
 from django.contrib.auth import get_user_model
 import logging
 from channels.db import database_sync_to_async
-from django.contrib.auth.models import AnonymousUser
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ def get_user(user_id):
         User = get_user_model()
         return User.objects.get(id=user_id)
     except User.DoesNotExist:
-        return AnonymousUser()
+        return None
 
 
 class AsgiJWTAuthMiddleware:
@@ -36,7 +35,7 @@ class AsgiJWTAuthMiddleware:
 
     async def __call__(self, scope, receive, send):
         # If the user is already authenticated (e.g. via session), don't override
-        if "user" in scope and scope["user"].is_authenticated:
+        if "user" in scope and scope["user"]:
             return await self.inner(scope, receive, send)
 
         headers = dict(scope["headers"])  # lower-case bytes
@@ -54,8 +53,8 @@ class AsgiJWTAuthMiddleware:
                 user_id = payload.get("user_id")
                 scope["user"] = await get_user(user_id)
             except jwt.PyJWTError:
-                scope["user"] = AnonymousUser()
+                scope["user"] = None
         else:
-            scope["user"] = AnonymousUser()
+            scope["user"] = None
 
         return await self.inner(scope, receive, send)

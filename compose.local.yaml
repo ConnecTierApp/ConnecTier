@@ -54,6 +54,9 @@ services:
     extends:
       service: ui
       file: compose.yaml
+    build:
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
     volumes:
       - ./ui:/app
       - /app/node_modules
