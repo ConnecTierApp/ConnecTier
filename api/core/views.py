@@ -4,6 +4,9 @@ from django.views import View
 from django.utils.decorators import method_decorator
 import json
 from core.models import UserProfile, Organization, Entity, Context, Document, Match, StatusUpdate
+import requests
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -263,6 +266,44 @@ class ContextDetailView(View):
                 } for e in context.entities.all()
             ]
         }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EntityTranscribeView(View):
+    """
+    POST /entity/<entity_id>/transcribe/
+    Accepts audio file (multipart/form-data, key='audio').
+    Transcribes using ElevenLabs API, deletes old docs, creates new doc with transcript.
+    """
+    @login_required
+    def post(self, request, entity_id, *args, **kwargs):
+        user = request.user
+        try:
+            entity = Entity.objects.get(id=entity_id, organization=user.organization)
+        except Entity.DoesNotExist:
+            return JsonResponse({'error': 'Entity not found.'}, status=404)
+
+        if 'audio' not in request.FILES:
+            return JsonResponse({'error': 'No audio file provided.'}, status=400)
+        audio_file = request.FILES['audio']
+
+        # Call ElevenLabs API (replace with your API key and endpoint)
+        api_key = settings.ELEVENLABS_API_KEY
+        api_url = 'https://api.elevenlabs.io/v1/transcriptions'
+        headers = {'xi-api-key': api_key}
+        files = {'audio': (audio_file.name, audio_file, audio_file.content_type)}
+        response = requests.post(api_url, files=files, headers=headers)
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Transcription failed.'}, status=500)
+        transcript = response.json().get('text')
+        if not transcript:
+            return JsonResponse({'error': 'No transcript returned.'}, status=500)
+
+        # Delete old documents for this entity
+        Document.objects.filter(entity=entity).delete()
+        # Create new document with transcript
+        doc = Document.objects.create(entity=entity, type='transcript', content=transcript)
+        return JsonResponse({'success': True, 'document_id': str(doc.id), 'transcript': transcript}, status=201)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class EntityDetailView(View):

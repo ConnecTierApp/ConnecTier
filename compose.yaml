@@ -27,6 +27,7 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DJANGO_SECRET_KEY:
       MISTRAL_API_KEY:
+      ELEVEN_LABS_API_KEY:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
       interval: 1m30s
@@ -37,6 +38,15 @@ services:
   worker:
     build:
       context: ./api
+    deploy:
+      replicas: 2
+      resources:
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+        limits:
+          cpus: '0.5'
+          memory: 1G
     command: uv run celery -A config worker -l info
     depends_on:
       - postgres
@@ -49,7 +59,7 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       DJANGO_SECRET_KEY:
       MISTRAL_API_KEY:
-
+      ELEVEN_LABS_API_KEY:
   ui:
     build:
       context: ./ui

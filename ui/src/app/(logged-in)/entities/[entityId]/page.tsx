@@ -5,6 +5,7 @@ import { useEntity } from '@/hooks/use-entity';
 import { Building, Users } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import { Button } from '@/components/ui/button';
 
 interface EntityDetailPageProps {
   params: Promise<{ entityId: string }>;
@@ -59,10 +60,15 @@ function EntityDetailPage({ params }: EntityDetailPageProps) {
         </Link>
       </div>
 
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex flex-wrap items-center gap-2 mb-2">
         {getTypeIcon(apiEntity.type)}
         <h1 className="text-2xl font-bold">{apiEntity.name}</h1>
         <span className="text-sm text-muted-foreground font-medium">({getTypeLabel(apiEntity.type)})</span>
+        <Link href={`/entity/${apiEntity.entity_id}/submit-document`} passHref legacyBehavior>
+          <Button variant="link" className="ml-2 text-blue-600 hover:text-blue-800">
+            Submission Link
+          </Button>
+        </Link>
       </div>
       <p className="text-gray-600 mb-6">View and manage entity details</p>
 
