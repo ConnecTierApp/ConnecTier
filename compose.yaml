@@ -47,7 +47,7 @@ services:
     build:
       context: ./ui
       args:
-        - NEXT_PUBLIC_API_URL=http://localhost:8000
+        - NEXT_PUBLIC_API_URL=https://api.connectier.app
     domainname: connectier.app
     command: "npm run start"
     ports:
