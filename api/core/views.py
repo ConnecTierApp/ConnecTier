@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 import json
-from core.models import UserProfile, Organization, Entity, Context, Document, Match
+from core.models import UserProfile, Organization, Entity, Context, Document, Match, StatusUpdate
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -14,6 +14,7 @@ from .tasks import match_entities
 
 logger = logging.getLogger(__name__)
 
+
 def login_required(view_func):
     @wraps(view_func)
     def _wrapped_view(self, request, *args, **kwargs):
@@ -22,6 +23,27 @@ def login_required(view_func):
             return JsonResponse({'error': 'Authentication required.'}, status=401)
         return view_func(self, request, *args, **kwargs)
     return _wrapped_view
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextStatusUpdatesListView(View):
+    @login_required
+    def get(self, request, context_id, *args, **kwargs):
+        user = request.user
+        context = Context.objects.filter(id=context_id, entities__organization=user.organization).distinct().first()
+        if not context:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        updates = StatusUpdate.objects.filter(context=context).order_by('created_at')
+        results = [
+            {
+                'status_update_id': str(update.id),
+                'context_id': str(context.id),
+                'data': update.data,
+                'the_match': str(update.the_match.id) if update.the_match else None,
+                'created_at': update.created_at.isoformat(),
+            }
+            for update in updates
+        ]
+        return JsonResponse({'results': results}, status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(View):

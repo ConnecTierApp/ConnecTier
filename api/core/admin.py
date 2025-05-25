@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Organization, Entity, Context, Match
+from .models import UserProfile, Organization, Entity, Context, Match, StatusUpdate
 
 class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ['email', 'first_name', 'last_name']
@@ -24,3 +24,10 @@ class MatchAdmin(admin.ModelAdmin):
     list_filter = ('score', 'context', 'startup', 'mentor')
 
 admin.site.register(Match, MatchAdmin)
+
+class StatusUpdateAdmin(admin.ModelAdmin):
+    list_display = ('id', 'context', 'the_match', 'created_at')
+    search_fields = ['id', 'context__name', 'the_match__id']
+    list_filter = ('context', 'the_match')
+
+admin.site.register(StatusUpdate, StatusUpdateAdmin)

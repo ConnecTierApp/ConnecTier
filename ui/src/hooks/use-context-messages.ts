@@ -1,10 +1,40 @@
 import { useEffect, useRef, useState } from "react";
 
+// ContextMessage should look like this:
+/**
+ * {
+  "type": "context_update_message",
+  "status": "info",
+  "message": {
+    "status": "info",
+    "message": "Match between mentor Evan Kim and startup FrameLoop created with score excellent. Reason: Evan's expertise in AI, ML ops, and creator tools perfectly aligns with FrameLoop's needs in scaling GPU inference and optimizing creator workflows.",
+    "mentor": "Evan Kim",
+    "startup": "FrameLoop",
+    "context_id": "c0663efb-7434-4251-a470-ed9cc537c338",
+    "match_id": "1a0b8fbd-ee6b-4a68-ba72-9f5b79769418",
+    "score": "excellent",
+    "reasoning": "Evan's expertise in AI, ML ops, and creator tools perfectly aligns with FrameLoop's needs in scaling GPU inference and optimizing creator workflows."
+  },
+  "context_id": "c0663efb-7434-4251-a470-ed9cc537c338",
+  "created_at": "2025-05-25T09:50:52.382746+00:00"
+}
+ */
+
 export interface ContextMessage {
+  type: string;
   status: string;
-  message: string;
-  type?: string;
-  match_id?: string;
+  message: {
+    status: string;
+    message: string;
+    mentor: string;
+    startup: string;
+    context_id: string;
+    match_id?: string;
+    score?: string;
+    reasoning?: string;
+  };
+  context_id: string;
+  created_at: string;
 }
 
 export function useContextMessages(contextId: string) {

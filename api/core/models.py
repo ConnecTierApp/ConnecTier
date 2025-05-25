@@ -135,8 +135,9 @@ class Embedding(BaseModel):
     chunk = models.OneToOneField(Chunk, on_delete=models.CASCADE, related_name='embedding')
 
 class StatusUpdate(BaseModel):
-    task_id = models.CharField(max_length=255, help_text="Identifiant de la tâche associée à la mise à jour de statut.")
-    status_data = models.JSONField(help_text="Données de statut stockées au format JSON.")
+    context = models.ForeignKey(Context, on_delete=models.CASCADE, related_name='status_updates', null=True)
+    the_match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='status_updates', null=True)
+    data = models.JSONField(help_text="JSON data.", null=True)
 
     def __str__(self):
-        return f"StatusUpdate(task_id={self.task_id}, created_at={self.created_at})"
+        return f"StatusUpdate(context_id={self.context_id}, created_at={self.created_at})"

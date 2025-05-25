@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 def send_status_update_to_channel(sender, instance, created, **kwargs):
     if created:
         # Use task_id as group name, or customize as needed
-        group_name = f"task_{instance.task_id}"
+        group_name = f"context_{instance.context_id}"
         channel_layer = get_channel_layer()
         message = {
             "type": "context_update_message",
             "status": "info",
-            "message": instance.status_data,
-            "task_id": instance.task_id,
+            "message": instance.data,
+            "context_id": str(instance.context_id),
             "created_at": instance.created_at.isoformat(),
         }
         try:
