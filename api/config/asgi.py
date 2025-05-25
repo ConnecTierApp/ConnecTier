@@ -7,6 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
 """
 
+import core.routing
 import os
 
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -17,13 +18,14 @@ import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
-import core.routing
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
+    "websocket": AsgiJWTAuthMiddleware(
+        AuthMiddlewareStack(
             URLRouter(
                 core.routing.websocket_urlpatterns
             )
         )
+    )
 })
