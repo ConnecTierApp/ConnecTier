@@ -2,12 +2,28 @@
 
 # ATTENTION JUDGES: YOU CAN USE THESE CREDENTIALS TO LOGIN TO THE APP AND TRY IT
 
-Username: user1@example.com
-Password: Potatoes!1
+ - Username: `user1@example.com`
+ - Password: `Potatoes!1`
+ - URL: `https://connectier.app`
+
 
 <a href="https://connectier.app" target="_blank">
     <img src="./assets/logo.png" alt="logo" width="180" height="180" />
 </a>
+
+## Stack
+
+- Next.js - for the frontend
+- Django - for the backend
+- PostgreSQL - for the database
+- Redis - for caching
+- Celery - for background tasks
+- Mistral - for AI
+- Docker - for local development
+- Defang.io - to deploy to AWS
+- AWS - for hosting
+
+## Description
 
 ConnecTier is a match-making system for startups, where founders and mentors can be matched based on their qualifications and interest.
 
