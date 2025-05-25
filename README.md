@@ -1,5 +1,10 @@
 # ConnectTier
 
+# ATTENTION JUDGES: YOU CAN USE THESE CREDENTIALS TO LOGIN TO THE APP AND TRY IT
+
+Username: user1@example.com
+Password: Potatoes!1
+
 <a href="https://connectier.app" target="_blank">
     <img src="./assets/logo.png" alt="logo" width="180" height="180" />
 </a>
