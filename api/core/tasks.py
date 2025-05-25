@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from celery import shared_task
 from mistralai import Mistral
+from mistralai.models.sdkerror import SDKError
 from .models import Context, Entity, Match, StatusUpdate
 from channels.layers import get_channel_layer
 import logging
@@ -73,10 +74,6 @@ def parse_response_json(content: str):
         
     return json.loads(json_attempt.strip().replace('\n', '').replace('\t', ''))
     
-from mistralai.models.sdkerror import SDKError
-import logging
-
-logger = logging.getLogger(__name__)
 
 @shared_task(bind=True, max_retries=5)
 def match_two_entities(self, context_id: str, mentor_id: str, startup_id: str):
