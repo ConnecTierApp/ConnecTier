@@ -9,6 +9,8 @@ WORKDIR /app
 ADD . /app
 RUN uv sync --locked
 
+RUN uv run python manage.py collectstatic --noinput
+
 RUN chmod +x run.sh
 
 CMD ["./run.sh"]
