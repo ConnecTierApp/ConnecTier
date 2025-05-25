@@ -5,10 +5,13 @@ import React from 'react';
 
 interface MatchesProps {
   contextId: string;
+  name?: string;
 }
 
-export const Matches: React.FC<MatchesProps> = ({ contextId }) => {
-  const { data: matchesResponse, error: matchesError, isLoading: matchesLoading } = useMatches(contextId, {
+export const Matches: React.FC<MatchesProps> = ({ contextId, name }) => {
+  // Build endpoint with optional name param
+  const endpoint = name && name.trim() ? `/contexts/${contextId}/matches/?name=${encodeURIComponent(name)}` : `/contexts/${contextId}/matches/`;
+  const { data: matchesResponse, error: matchesError, isLoading: matchesLoading } = useMatches(endpoint, {
     refreshInterval: 1000,
   });
 

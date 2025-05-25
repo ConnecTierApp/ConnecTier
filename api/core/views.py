@@ -293,26 +293,30 @@ class ContextMatchesListView(View):
         if not context:
             return JsonResponse({'error': 'Not found.'}, status=404)
         matches = Match.objects.filter(context=context).order_by('-created_at')
+        name_query = request.GET.get('name', '').strip()
         results = []
         for match in matches:
+            entities = [
+                {
+                    'entity_id': str(match.startup.id),
+                    'name': match.startup.name,
+                    'type': match.startup.type,
+                },
+                {
+                    'entity_id': str(match.mentor.id),
+                    'name': match.mentor.name,
+                    'type': match.mentor.type,
+                }
+            ]
+            if len(name_query) > 3:
+                entities = [e for e in entities if name_query.lower() in e['name'].lower()]
             results.append({
                 'match_id': str(match.id),
                 'context_id': str(context.id),
                 'score': match.score,
                 'reasoning': match.reasoning,
                 'created_at': match.created_at.isoformat(),
-                'entities': [
-                    {
-                        'entity_id': str(match.startup.id),
-                        'name': match.startup.name,
-                        'type': match.startup.type,
-                    },
-                    {
-                        'entity_id': str(match.mentor.id),
-                        'name': match.mentor.name,
-                        'type': match.mentor.type,
-                    }
-                ]
+                'entities': entities
             })
         return JsonResponse({'results': results}, status=200)
 
