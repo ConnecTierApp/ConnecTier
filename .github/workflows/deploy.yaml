@@ -17,5 +17,9 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v4
 
-    - name: Deploy
-      uses: DefangLabs/defang-github-action@v1.2.0
+    # docker compose build to check for errors
+    - name: Build Docker Compose
+      run: docker compose build
+
+    # - name: Deploy
+    #   uses: DefangLabs/defang-github-action@v1.2.0
