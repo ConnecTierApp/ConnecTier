@@ -333,8 +333,7 @@ class ContextMatchesListView(View):
         context = Context.objects.filter(id=context_id, organization=org).first()
         if not context:
             return JsonResponse({'error': 'Not found.'}, status=404)
-        matches = Match.objects.filter(context=context).order_by('-created_at')
-        name_query = request.GET.get('name', '').strip()
+        matches = Match.objects.filter(context=context).prefetch_related("startup", "mentor").order_by('-created_at')
         results = []
         for match in matches:
             entities = [
@@ -349,8 +348,6 @@ class ContextMatchesListView(View):
                     'type': match.mentor.type,
                 }
             ]
-            if len(name_query) > 3:
-                entities = [e for e in entities if name_query.lower() in e['name'].lower()]
             results.append({
                 'match_id': str(match.id),
                 'context_id': str(context.id),
