@@ -333,7 +333,7 @@ class ContextMatchesListView(View):
         context = Context.objects.filter(id=context_id, organization=org).first()
         if not context:
             return JsonResponse({'error': 'Not found.'}, status=404)
-        matches = Match.objects.filter(context=context).order_by('-created_at')
+        matches = Match.objects.filter(context=context).prefetch_related("startup", "mentor").order_by('-created_at')
         name_query = request.GET.get('name', '').strip()
         results = []
         for match in matches:
