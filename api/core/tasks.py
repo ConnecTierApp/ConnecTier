@@ -106,7 +106,8 @@ def match_two_entities(self, context_id: str, mentor_id: str, startup_id: str):
     try:
         with Mistral(api_key=settings.MISTRAL_API_KEY) as mistral:
             response = mistral.chat.complete(
-                model="mistral-medium-2505",
+                # model="mistral-medium-2505",
+                model="mistral-large-latest",
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT_MATCH},
                     {"role": "user", "content": f"Mentor: {mentor.name}\nTranscript: `{mentor.documents.first().content}`\n\nStartup: {startup_id.name}\nTranscript: `{startup_id.documents.first().content}`"}
