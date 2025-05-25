@@ -35,6 +35,7 @@ const SubmitDocumentPage: FC = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   // Note: mediaStream is only used for starting/stopping tracks, not in render
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
