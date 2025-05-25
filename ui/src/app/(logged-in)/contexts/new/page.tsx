@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, ChangeEvent } from "react";
 import { useEntities } from "@/hooks/use-entities";
 import { useRouter } from "next/navigation";
 import { useCreateContext } from "@/hooks/use-create-context";
@@ -246,16 +246,41 @@ function StepPanel({
   loading: boolean;
   entityType: string;
 }) {
+  // Add select all for startups
+  const allSelected = entities.length > 0 && selectedIds.length === entities.length;
+  const isStartupPanel = entityType === "startup";
+  const isMentorPanel = entityType === "mentor";
   return (
     <div className="bg-white rounded-lg shadow-md p-6 animate-fade-in">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
       <p className="text-gray-600 mb-4">{description}</p>
       <Input
         value={searchValue}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
         placeholder={`Search ${entityType}s...`}
         className="mb-4"
       />
+      {(isStartupPanel || isMentorPanel) && (
+        <div className="mb-2 flex items-center">
+          <input
+            type="checkbox"
+            checked={allSelected}
+            onChange={() => {
+              if (allSelected) {
+                entities.forEach((entity) => {
+                  if (selectedIds.includes(entity.entity_id)) onToggle(entity.entity_id);
+                });
+              } else {
+                entities.forEach((entity) => {
+                  if (!selectedIds.includes(entity.entity_id)) onToggle(entity.entity_id);
+                });
+              }
+            }}
+            className="mr-2 accent-indigo-600"
+          />
+          <span className="text-sm">Select All</span>
+        </div>
+      )}
       <div className="max-h-56 overflow-y-auto border rounded-md">
         {loading ? (
           <div className="p-4">
