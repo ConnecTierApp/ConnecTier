@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 import json
-from core.models import UserProfile, Organization, Entity, Context, Document
+from core.models import UserProfile, Organization, Entity, Context, Document, Match
 from django.contrib.auth import authenticate
 import jwt
 from django.conf import settings
@@ -260,6 +260,39 @@ class EntityDetailView(View):
             'context_ids': [str(context.id) for context in entity.contexts.all()],
             'created_at': entity.created_at.isoformat(),
         }, status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContextMatchesListView(View):
+    @login_required
+    def get(self, request, context_id, *args, **kwargs):
+        user = request.user
+        org = user.organization
+        context = Context.objects.filter(id=context_id, organization=org).first()
+        if not context:
+            return JsonResponse({'error': 'Not found.'}, status=404)
+        matches = Match.objects.filter(context=context).order_by('-created_at')
+        results = []
+        for match in matches:
+            results.append({
+                'match_id': str(match.id),
+                'context_id': str(context.id),
+                'score': match.score,
+                'reasoning': match.reasoning,
+                'created_at': match.created_at.isoformat(),
+                'entities': [
+                    {
+                        'entity_id': str(match.startup.id),
+                        'name': match.startup.name,
+                        'type': match.startup.type,
+                    },
+                    {
+                        'entity_id': str(match.mentor.id),
+                        'name': match.mentor.name,
+                        'type': match.mentor.type,
+                    }
+                ]
+            })
+        return JsonResponse({'results': results}, status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ProfileView(View):

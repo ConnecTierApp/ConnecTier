@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView, EntityListView, ContextCreateView, ContextListView, ContextDetailView, EntityDetailView, ProfileView, DocumentCreateView, DocumentDetailView
+from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView, EntityListView, ContextCreateView, ContextListView, ContextDetailView, EntityDetailView, ProfileView, DocumentCreateView, DocumentDetailView, ContextMatchesListView
 from django.http import HttpResponse
 
 urlpatterns = [
@@ -31,6 +31,7 @@ urlpatterns = [
     path('context/', ContextCreateView.as_view(), name='context_create'),
     path('contexts/', ContextListView.as_view(), name='context_list'),
     path('context/<uuid:context_id>', ContextDetailView.as_view(), name='context_detail'),
+    path('contexts/<uuid:context_id>/matches/', ContextMatchesListView.as_view(), name='context_matches_list'),
     path('entity/<uuid:entity_id>', EntityDetailView.as_view(), name='entity_detail'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('document/', DocumentCreateView.as_view(), name='document_create'),
