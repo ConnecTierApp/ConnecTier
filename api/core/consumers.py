@@ -39,17 +39,15 @@ class ContextConsumer(AsyncWebsocketConsumer):
         self.group_name = f"context_{context_id}"
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
-        # logger.info(f"[WS] WebSocket connection accepted for group {self.group_name}")
 
 
     async def disconnect(self, close_code):
-        pass
-        # group_name = getattr(self, 'group_name', None)
-        # if group_name is not None:
-        #     await self.channel_layer.group_discard(group_name, self.channel_name)
-        #     logger.info(f"[WS] Disconnected channel {self.channel_name} from group {group_name}")
-        # else:
-        #     logger.warning(f"[WS] disconnect() called but self.group_name is not set! Channel: {self.channel_name}")
+        group_name = getattr(self, 'group_name', None)
+        if group_name is not None:
+            await self.channel_layer.group_discard(group_name, self.channel_name)
+            logger.info(f"[WS] Disconnected channel {self.channel_name} from group {group_name}")
+        else:
+            logger.warning(f"[WS] disconnect() called but self.group_name is not set! Channel: {self.channel_name}")
 
 
     async def context_update_message(self, event):
@@ -61,4 +59,5 @@ class ContextConsumer(AsyncWebsocketConsumer):
         Event should include status, message, type, and
         potentially match_id if the event is related to a match.
         """
+        logger.error(f"[WS] Sending event: {event}")
         await self.send(text_data=json.dumps(event))

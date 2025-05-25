@@ -6,6 +6,7 @@ from mistralai import Mistral
 from .models import Context, Entity, Match
 from channels.layers import get_channel_layer
 import logging
+from asgiref.sync import async_to_sync
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ def match_entities(context_id: str):
     # send message using context_update_message group send
     group_name = f"context_{context_id}"
     channel_layer = get_channel_layer()
-    channel_layer.group_send(group_name, {"type": "context_update_message", "status": "info", "message": "Matching entities..."})
+    async_to_sync(channel_layer.group_send)(group_name, {"type": "context_update_message", "status": "info", "message": "Matching entities..."})
 
 
     context = Context.objects.get(id=context_id)
@@ -62,32 +63,54 @@ def parse_response_json(content: str):
         
     return json.loads(json_attempt.strip().replace('\n', '').replace('\t', ''))
     
-@shared_task
-def match_two_entities(context_id: str, mentor_id: str, startup_id: str):
+from mistralai.models.sdkerror import SDKError
+import logging
+
+logger = logging.getLogger(__name__)
+
+@shared_task(bind=True, max_retries=5)
+def match_two_entities(self, context_id: str, mentor_id: str, startup_id: str):
     mentor = Entity.objects.get(id=mentor_id)
     startup_id = Entity.objects.get(id=startup_id)
     context = Context.objects.get(id=context_id)
 
     channel_layer = get_channel_layer()
     group_name = f"context_{context_id}"
-    channel_layer.group_send(group_name, {"type": "context_update_message", "status": "info", "message": "Testing match between mentor {mentor.name} and startup {startup_id.name}"})
+    async_to_sync(channel_layer.group_send)(group_name, {"type": "context_update_message", "status": "info", "message": f"Testing match between mentor {mentor.name} and startup {startup_id.name}"})
     
-    if Match.object.exists(mentor=mentor, startup=startup_id, context=context):
+    if Match.objects.filter(
+        mentor=mentor,
+        startup=startup_id,
+        context=context
+    ).exists():
         logger.info(f"Match already exists for mentor {mentor.name} and startup {startup_id.name} in context {context.name}")
         return
 
-    with Mistral(api_key=settings.MISTRAL_API_KEY) as mistral:
-        response = mistral.chat.complete(
-            #model="mistral-large",
-            model="mistral-small-latest",
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT_MATCH},
-                {"role": "user", "content": f"Mentor: {mentor.name}\nTranscript: `{mentor.documents.first().content}`\n\nStartup: {startup_id.name}\nTranscript: `{startup_id.documents.first().content}`"}
-            ],
-            max_tokens=100,
-            temperature=0.2,
+    try:
+        with Mistral(api_key=settings.MISTRAL_API_KEY) as mistral:
+            response = mistral.chat.complete(
+                model="mistral-medium-2505",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT_MATCH},
+                    {"role": "user", "content": f"Mentor: {mentor.name}\nTranscript: `{mentor.documents.first().content}`\n\nStartup: {startup_id.name}\nTranscript: `{startup_id.documents.first().content}`"}
+                ],
+                max_tokens=100,
+                temperature=0.2,
+            )
+    except SDKError as exc:
+        logger.error(
+            f"SDKError occurred in match_two_entities: status_code={getattr(exc, 'status_code', None)}, "
+            f"message={getattr(exc, 'message', str(exc))}, body={getattr(exc, 'body', None)}"
         )
-        
+        if getattr(exc, "status_code", None) == 429:
+            delay = min(2 ** self.request.retries, 60)
+            logger.warning(f"Rate limit hit. Retrying in {delay}s (attempt {self.request.retries + 1})")
+            raise self.retry(exc=exc, countdown=delay)
+        else:
+            import traceback
+            logger.error("Unexpected SDKError traceback:\n" + traceback.format_exc())
+            raise
+    
     response_content = response.choices[0].message.content
     parsed_response = parse_response_json(response_content)
     score = parsed_response["score"]
@@ -99,4 +122,4 @@ def match_two_entities(context_id: str, mentor_id: str, startup_id: str):
         score=score,
         reasoning=reasoning
     )
-    channel_layer.group_send(group_name, {"type": "context_update_message", "status": "info", "message": f"Match between mentor {mentor.name} and startup {startup_id.name} created with score {score}. Reason: \n{reasoning}", "match_id": match.id})
+    async_to_sync(channel_layer.group_send)(group_name, {"type": "context_update_message", "status": "info", "message": f"Match between mentor {mentor.name} and startup {startup_id.name} created with score {score}. Reason: \n{reasoning}", "match_id": str(match.id)})
