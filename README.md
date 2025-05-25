@@ -24,3 +24,13 @@ This will start all required services in the background.
 ## Deployment
 
 This project is deployed to AWS using Defang CLI to generate ECS containers. Deployment is handled automatically via CI/CD on GitHub.
+
+## Load transcripts
+
+To load the transcripts execute the local script:
+
+```bash
+$ uv run scripts/load_transcripts.py <host> <username> <password>
+```
+
+This will create the mentors and startups and load their transcripts as seen in `test/transcripts/*`.
