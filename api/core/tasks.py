@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from celery import shared_task
 from mistralai import Mistral
-from .models import Context, Entity, Match
+from .models import Context, Entity, Match, StatusUpdate
 from channels.layers import get_channel_layer
 import logging
 from asgiref.sync import async_to_sync
@@ -49,6 +49,16 @@ def match_entities(context_id: str):
         for startup in startups:
             # Call the matching function with the mentor and startup
             match_two_entities.delay(str(context.id), str(mentor.id), str(startup.id))
+            # Create a status update for each task
+            StatusUpdate.objects.create(
+                task_id=f"match_{context.id}_{mentor.id}_{startup.id}",
+                status_data={
+                    "status": "started",
+                    "mentor": mentor.name,
+                    "startup": startup.name,
+                    "context_id": str(context.id)
+                }
+            )
     
 def parse_response_json(content: str):
     json_attempt = ""
@@ -77,6 +87,16 @@ def match_two_entities(self, context_id: str, mentor_id: str, startup_id: str):
     channel_layer = get_channel_layer()
     group_name = f"context_{context_id}"
     async_to_sync(channel_layer.group_send)(group_name, {"type": "context_update_message", "status": "info", "message": f"Testing match between mentor {mentor.name} and startup {startup_id.name}"})
+    StatusUpdate.objects.create(
+        task_id=f"match_{context_id}_{mentor_id}_{startup_id}",
+        status_data={
+            "status": "info",
+            "message": f"Testing match between mentor {mentor.name} and startup {startup_id.name}",
+            "mentor": mentor.name,
+            "startup": startup_id.name,
+            "context_id": str(context_id)
+        }
+    )
     
     if Match.objects.filter(
         mentor=mentor,
@@ -123,3 +143,16 @@ def match_two_entities(self, context_id: str, mentor_id: str, startup_id: str):
         reasoning=reasoning
     )
     async_to_sync(channel_layer.group_send)(group_name, {"type": "context_update_message", "status": "info", "message": f"Match between mentor {mentor.name} and startup {startup_id.name} created with score {score}. Reason: \n{reasoning}", "match_id": str(match.id)})
+    StatusUpdate.objects.create(
+        task_id=f"match_{context_id}_{mentor_id}_{startup_id}",
+        status_data={
+            "status": "info",
+            "message": f"Match between mentor {mentor.name} and startup {startup_id.name} created with score {score}. Reason: {reasoning}",
+            "mentor": mentor.name,
+            "startup": startup_id.name,
+            "context_id": str(context_id),
+            "match_id": str(match.id),
+            "score": score,
+            "reasoning": reasoning
+        }
+    )
