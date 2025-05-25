@@ -5,6 +5,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
+# Install curl
+RUN apt-get update && apt-get install -y curl \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy the project into the image
 ADD . /app
 RUN uv sync --locked
