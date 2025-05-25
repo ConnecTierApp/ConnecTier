@@ -1,0 +1,141 @@
+---
+
+[00:00:00] Bob: Hello Jamila and Tobias, thanks for joining this call today.
+
+[00:00:02] Jamila: Hi Bob, great to chat with you.
+
+[00:00:04] Tobias: Yes, thanks for having us.
+
+[00:00:06] Bob: Let’s start with a brief introduction. Jamila, tell me your background and role at Verdex Metrics.
+
+[00:00:11] Jamila: Sure. I’m Jamila Okonkwo, co-founder and CEO of Verdex Metrics. I have a background in environmental economics and have worked extensively on climate policy and stakeholder engagement in Nigeria and across Africa. My role at Verdex is to drive business development and ensure we meet the needs of our clients while aligning with ESG regulations.
+
+[00:00:35] Bob: That’s impressive. Tobias, could you share your background and role as well?
+
+[00:00:38] Tobias: Of course. I’m Tobias Müller, co-founder and CTO of Verdex Metrics. I have a strong background in backend engineering, particularly in data pipelines and AWS infrastructure. I handle the technical aspects of our platform, including API design and ensuring our system integrates well with our clients' existing technologies.
+
+[00:01:05] Bob: Fantastic. Can you share what inspired you both to launch Verdex Metrics?
+
+[00:01:09] Jamila: Absolutely. During my work in climate policy, I noticed a significant gap in how African manufacturers were tracking and reporting their carbon emissions. Many were struggling to comply with new ESG regulations due to a lack of accessible and affordable tools. Tobias and I saw an opportunity to create a platform that could help these manufacturers monitor their emissions more effectively and meet regulatory requirements.
+
+[00:01:40] Tobias: Yes, and from a technical standpoint, I saw the potential to leverage data pipelines and cloud infrastructure to create a scalable solution. We wanted to make it easy for manufacturers to integrate our platform with their existing systems, providing them with actionable insights to reduce their carbon footprint.
+
+[00:02:00] Bob: And Verdex Metrics’ mission in a nutshell?
+
+[00:02:03] Jamila: Our mission is to empower African mid-sized manufacturers with a comprehensive carbon intelligence platform that helps them monitor emissions, comply with ESG regulations, and make data-driven decisions to reduce their environmental impact.
+
+[00:02:20] Bob: How did you build your initial prototype?
+
+[00:02:23] Tobias: We started by identifying the key data points that manufacturers needed to track for ESG compliance. We then built a data pipeline that could collect and process this information in real-time. I used AWS services to ensure the platform was scalable and secure. Jamila worked on the user interface and ensured that the platform was intuitive and easy to use for our clients.
+
+[00:02:50] Jamila: Yes, and we also conducted pilot tests with a few manufacturers to gather feedback and make necessary adjustments. This iterative process helped us refine the platform to better meet the needs of our target market.
+
+[00:03:10] Bob: That’s a solid approach. What are some of the key features of your platform?
+
+[00:03:14] Tobias: Our platform offers real-time emission tracking, customizable dashboards for different stakeholders, and automated reporting for ESG compliance. We also provide predictive analytics to help manufacturers identify potential areas for emission reduction and cost savings.
+
+[00:03:40] Jamila: Additionally, we offer a stakeholder engagement module that allows manufacturers to communicate their sustainability efforts to investors, customers, and other stakeholders. This transparency is crucial for building trust and meeting regulatory requirements.
+
+[00:04:00] Bob: It sounds like you have a robust platform. What are some of the challenges you’ve faced so far?
+
+[00:04:04] Jamila: One of our biggest challenges has been integrating our platform with legacy ERP systems used by many manufacturers. These systems are often outdated and not designed for easy integration with modern tools. We’ve struggled to find the right expertise to navigate this challenge.
+
+[00:04:30] Tobias: Yes, and another challenge has been understanding the nuances of green finance and how to present our impact metrics to potential investors. We need guidance on how to effectively communicate the environmental and financial benefits of our platform to secure funding.
+
+[00:04:55] Bob: Those are common challenges for startups in your space. Let’s dive deeper into the integration issue. What specific problems have you encountered with legacy ERP systems?
+
+[00:05:08] Tobias: The main issue is compatibility. Many of these systems use proprietary formats and protocols that make it difficult to extract and sync data with our platform. We’ve tried using middleware and custom scripts, but it’s been a time-consuming and error-prone process. We need a more streamlined approach.
+
+[00:05:35] Jamila: Also, the manufacturers themselves are often resistant to change. They’re used to their existing systems and are hesitant to adopt new technologies, even if it means better compliance and efficiency. We need to find ways to make the transition smoother for them.
+
+[00:06:00] Bob: Understood. On the green finance side, what aspects do you find most challenging?
+
+[00:06:04] Jamila: The biggest challenge is understanding the criteria that investors use to evaluate green projects. We need to know what metrics they look for and how to present our data in a way that highlights our impact. Additionally, we need to navigate the complex landscape of green finance instruments and identify the ones that are most suitable for our stage of growth.
+
+[00:06:35] Tobias: Yes, and we also need to understand the regulatory environment for green finance in different African countries. Each country has its own set of rules and incentives, and we need to tailor our approach accordingly.
+
+[00:07:00] Bob: Those are valid points. Let’s talk about your current traction. How many manufacturers are using your platform, and what feedback have you received?
+
+[00:07:06] Jamila: We currently have about 20 manufacturers on our platform, mostly in Nigeria and Kenya. The feedback has been largely positive. Users appreciate the real-time tracking and automated reporting features. However, we’ve received requests for more customization options and better integration with their existing systems.
+
+[00:07:35] Tobias: Yes, and some manufacturers have also asked for more detailed analytics and recommendations on how to reduce their emissions. We’re working on enhancing our predictive analytics to meet this demand.
+
+[00:08:00] Bob: That’s great to hear. What are your plans for scaling the platform?
+
+[00:08:04] Jamila: Our immediate plan is to expand our user base to other African countries, particularly Ghana and South Africa. We also want to partner with more manufacturers and industry associations to increase our reach. On the technical side, we plan to enhance our data processing capabilities and introduce more advanced analytics features.
+
+[00:08:35] Tobias: Yes, and we’re also looking into potential integrations with other sustainability tools and platforms. This could provide our users with a more comprehensive solution for their ESG compliance needs.
+
+[00:09:00] Bob: Those are ambitious plans. How do you plan to address the challenges you mentioned earlier as you scale?
+
+[00:09:04] Jamila: For the integration issue, we’re exploring partnerships with ERP system providers and consultants who specialize in legacy system integration. We hope that their expertise can help us develop more robust integration solutions.
+
+[00:09:30] Tobias: And for green finance, we’re planning to engage with financial advisors and impact investors to better understand their expectations and the available financing options. We also want to participate in industry conferences and workshops to stay updated on the latest trends and regulations in green finance.
+
+[00:10:00] Bob: That’s a proactive approach. Let’s talk about your team. How many people do you have, and what roles are you looking to fill?
+
+[00:10:05] Jamila: We currently have a team of 10, including developers, data scientists, and business development specialists. As we scale, we’re looking to hire more data analysts and customer success managers to support our growing user base. We also need experts in ERP system integration and green finance.
+
+[00:10:35] Tobias: Yes, and we’re also considering bringing on a product manager to oversee the development and rollout of new features. This will help us ensure that our platform continues to meet the evolving needs of our users.
+
+[00:11:00] Bob: That makes sense. How do you envision the role of mentors in helping you overcome your current challenges?
+
+[00:11:05] Jamila: Mentors can provide invaluable guidance and insights based on their experience. We’re looking for mentors who have expertise in legacy system integration and green finance. Their advice can help us navigate these challenges more effectively and accelerate our growth.
+
+[00:11:30] Tobias: Yes, and we also hope that mentors can connect us with relevant industry contacts and potential partners. Their networks can open up new opportunities for us and help us build strategic alliances.
+
+[00:12:00] Bob: Absolutely. Let’s talk about your long-term vision for Verdex Metrics. Where do you see the company in five years?
+
+[00:12:05] Jamila: In five years, we envision Verdex Metrics as the go-to carbon intelligence platform for manufacturers across Africa. We want to be a trusted partner for businesses looking to comply with ESG regulations and reduce their environmental impact. We also aim to expand our services to other sectors, such as agriculture and transportation.
+
+[00:12:35] Tobias: Yes, and we want to be at the forefront of innovation in carbon monitoring and management. We plan to continuously enhance our platform with the latest technologies and analytics tools to provide our users with the best possible solutions.
+
+[00:13:00] Bob: That’s an inspiring vision. What are the key milestones you need to achieve to get there?
+
+[00:13:04] Jamila: Our key milestones include expanding our user base to at least 100 manufacturers within the next two years, securing additional funding to support our growth, and achieving profitability within the next three years. We also want to establish strategic partnerships with industry leaders and regulatory bodies to enhance our credibility and reach.
+
+[00:13:35] Tobias: Yes, and we want to continuously improve our platform based on user feedback and emerging technologies. This will help us stay ahead of the competition and provide our users with the most effective solutions for their ESG compliance needs.
+
+[00:14:00] Bob: Those are clear and ambitious milestones. How do you plan to measure your success along the way?
+
+[00:14:04] Jamila: We plan to measure our success through a combination of quantitative and qualitative metrics. These include the number of manufacturers using our platform, the amount of emissions reduced, user satisfaction ratings, and the financial performance of our company. We also want to track our impact on the broader ecosystem, such as the number of jobs created and the environmental benefits achieved.
+
+[00:14:35] Tobias: Yes, and we want to conduct regular user surveys and feedback sessions to understand how our platform is meeting their needs and where we can improve. This continuous feedback loop will help us refine our solutions and ensure we’re on track to achieve our long-term vision.
+
+[00:15:00] Bob: That’s a comprehensive approach. Let’s talk about your competition. Who are your main competitors, and how do you differentiate yourselves?
+
+[00:15:05] Jamila: Our main competitors include other carbon monitoring platforms and ESG consulting firms. However, we differentiate ourselves through our focus on African manufacturers and our comprehensive, data-driven approach. Our platform provides real-time tracking, automated reporting, and advanced analytics, which sets us apart from traditional consulting services.
+
+[00:15:35] Tobias: Yes, and our platform is designed to be user-friendly and easily integrable with existing systems. We also offer customizable dashboards and stakeholder engagement tools, which provide our users with a more holistic solution for their ESG compliance needs.
+
+[00:16:00] Bob: That’s a strong value proposition. How do you plan to stay ahead of the competition as the market evolves?
+
+[00:16:04] Jamila: We plan to stay ahead by continuously innovating and adapting to the changing needs of our users. This includes staying updated on the latest ESG regulations and technologies, and incorporating user feedback into our platform development. We also want to build strong partnerships with industry leaders and regulatory bodies to enhance our credibility and reach.
+
+[00:16:35] Tobias: Yes, and we want to invest in research and development to explore new technologies and analytics tools that can enhance our platform. This will help us provide our users with the most effective and efficient solutions for their ESG compliance needs.
+
+[00:17:00] Bob: That’s a forward-thinking approach. Let’s talk about your marketing and sales strategy. How do you plan to attract and retain manufacturers on your platform?
+
+[00:17:05] Jamila: Our marketing and sales strategy focuses on building strong relationships with manufacturers and industry associations. We plan to attend industry conferences and events to showcase our platform and engage with potential users. We also want to leverage digital marketing channels, such as social media and content marketing, to increase our visibility and reach.
+
+[00:17:35] Tobias: Yes, and we want to offer free trials and demos to potential users to give them a firsthand experience of our platform. We also plan to provide ongoing support and training to help our users get the most out of our solutions.
+
+[00:18:00] Bob: That’s a well-rounded strategy. How do you plan to address any resistance from manufacturers who are hesitant to adopt new technologies?
+
+[00:18:05] Jamila: We plan to address this resistance by emphasizing the benefits of our platform, such as improved ESG compliance, cost savings, and enhanced sustainability. We also want to provide case studies and success stories from our existing users to demonstrate the value of our solutions. Additionally, we plan to offer customized onboarding and training programs to make the transition smoother for manufacturers.
+
+[00:18:35] Tobias: Yes, and we want to ensure that our platform is intuitive and easy to use, even for those who are not tech-savvy. We plan to conduct user testing and gather feedback to continuously improve the user experience.
+
+[00:19:00] Bob: That’s a thoughtful approach. Before we wrap up, is there anything else you’d like to share about Verdex Metrics or your journey so far?
+
+[00:19:05] Jamila: We’re really excited about the potential of Verdex Metrics to make a significant impact on the environment and the manufacturing sector in Africa. We’re grateful for the support we’ve received so far and look forward to continuing to grow and innovate.
+
+[00:19:30] Tobias: Yes, and we’re always open to feedback and collaboration opportunities. We believe that by working together, we can achieve even greater success and make a real difference.
+
+[00:19:50] Bob: Thank you, Jamila and Tobias, for sharing your journey and insights. I’m confident that with the right mentorship and support, Verdex Metrics will achieve great success. Let’s stay in touch and continue the conversation.
+
+[00:20:00] Jamila: Thank you, Bob. We look forward to it.
+
+[00:20:02] Tobias: Yes, thank you for having us.
+
+---
