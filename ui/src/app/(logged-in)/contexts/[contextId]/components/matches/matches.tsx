@@ -10,13 +10,13 @@ interface MatchesProps {
 
 export const Matches: React.FC<MatchesProps> = ({ contextId, name }) => {
   // Build endpoint with optional name param
-  const endpoint = name && name.trim() ? `/contexts/${contextId}/matches/?name=${encodeURIComponent(name)}` : `/contexts/${contextId}/matches/`;
-  const { data: matchesResponse, error: matchesError, isLoading: matchesLoading } = useMatches(endpoint, {
+  const { data: matchesResponse, error: matchesError, isLoading: matchesLoading } = useMatches(`/contexts/${contextId}/matches/`, {
     refreshInterval: 1000,
   });
 
   const matches = matchesResponse?.results || [];
   const rankedMatches = matches
+    .filter(match => match.entities.some(entity => entity.name.toLowerCase().includes(name?.toLowerCase() || '')))
     .map(match => ({
       ...match,
       numericalScore: (({

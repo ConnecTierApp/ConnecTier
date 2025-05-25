@@ -16,16 +16,10 @@ function ContextPage({ params }: ContextPageProps) {
 
   // Search state for entity name
   const [search, setSearch] = React.useState('');
-  const [searchValue, setSearchValue] = React.useState('');
 
   // Handle search input and submit on Enter
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  };
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setSearchValue(search.trim());
-    }
   };
 
   return (
@@ -46,7 +40,6 @@ function ContextPage({ params }: ContextPageProps) {
           placeholder="Search by entity name..."
           value={search}
           onChange={handleInputChange}
-          onKeyDown={handleInputKeyDown}
         />
       </div>
 
@@ -55,7 +48,7 @@ function ContextPage({ params }: ContextPageProps) {
         <div className="flex-1 min-w-0">
           <Matches
             contextId={contextId}
-            name={searchValue || undefined}
+            name={search || undefined}
           />
         </div>
         {/* Right column */}

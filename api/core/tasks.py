@@ -77,7 +77,7 @@ def parse_response_json(content: str):
     return json.loads(json_attempt.strip().replace('\n', '').replace('\t', ''))
     
 
-@shared_task(bind=True, max_retries=5, autoretry_for=(Exception,), retry_backoff=True, retry_jitter=True)
+@shared_task(bind=True, max_retries=100, autoretry_for=(Exception,), retry_backoff=True, retry_jitter=True)
 def match_two_entities(self, context_id: str, mentor_id: str, startup_id: str):
     mentor = Entity.objects.get(id=mentor_id)
     startup_id = Entity.objects.get(id=startup_id)

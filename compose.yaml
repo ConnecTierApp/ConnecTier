@@ -42,11 +42,11 @@ services:
       replicas: 2
       resources:
         reservations:
-          cpus: '0.5'
-          memory: 1G
+          cpus: '2'
+          memory: 4G
         limits:
-          cpus: '0.5'
-          memory: 1G
+          cpus: '2'
+          memory: 4G
     command: uv run celery -A config worker -l info
     depends_on:
       - postgres
