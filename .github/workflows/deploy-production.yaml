@@ -20,13 +20,13 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v4
 
-    # - name: Deploy
-    #   uses: DefangLabs/defang-github-action@v1.2.0
-    #   env:
-    #     DEFANG_PROVIDER: aws
-    #     DEFANG_ORG: ConnecTierApp
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     AWS_REGION: eu-west-3
-    #     COMPOSE_PROJECT_NAME: connectier-production
+    - name: Deploy
+      uses: DefangLabs/defang-github-action@v1.2.0
+      env:
+        DEFANG_PROVIDER: aws
+        DEFANG_ORG: ConnecTierApp
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-west-3
+        COMPOSE_PROJECT_NAME: connectier-production
 
