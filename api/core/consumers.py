@@ -11,18 +11,23 @@ class ContextConsumer(AsyncWebsocketConsumer):
         context_id = self.scope['url_route']['kwargs'].get('context_id')
         user = self.scope.get('user')
         logger.error(f"[WS] User {user} connecting to context {context_id}")
+        logger.error(f"LALALA POTATO")
+
 
         if not user or not user.is_authenticated:
             logger.warning("[WS] User not authenticated, closing with code 4001")
             await self.close(code=4001)
             return
         # Try to find the context and check org
+        logger.error(f"LALALA POTATO")
+
         try:
             user_org = await sync_to_async(lambda: user.organization)()
             user_org_id = str(user_org.id)
             context = await sync_to_async(Context.objects.prefetch_related('organization').get)(id=context_id)
             context_org = await sync_to_async(lambda: context.organization)()
             context_org_id = str(context_org.id) if context_org else None
+            logger.error(f"LALALA POTATO")
             if not user_org or not context_org_id or user_org_id != context_org_id:
                 logger.warning(f"[WS] User org mismatch: user.org={user.organization.id}, context.org={context_org_id}. Closing with 4003.")
                 await self.close(code=4003)
@@ -37,6 +42,8 @@ class ContextConsumer(AsyncWebsocketConsumer):
             return
         # Generate a safe, unique group name for this connection
         self.group_name = f"context_{context_id}"
+        logger.error(f"LALALA GROUP NAME: {self.group_name}")
+        logger.info(f"[WS] Connected channel {self.channel_name} to group {self.group_name}")
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 

@@ -60,7 +60,7 @@ export const Matches: React.FC<MatchesProps> = ({ contextId }) => {
               {/* Entities Row */}
               <div className="flex flex-col gap-8 sm:flex-row sm:gap-8 sm:items-center mb-6">
                 {/* Startup */}
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-4">
                   <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-blue-600">
                       <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122z" />
@@ -73,10 +73,10 @@ export const Matches: React.FC<MatchesProps> = ({ contextId }) => {
                 </div>
                 {/* VS Divider */}
                 <div className="hidden sm:flex flex-col items-center justify-center">
-                  <span className="text-sm font-bold text-gray-400">VS</span>
+                  <span className="text-xl font-bold text-gray-400">&</span>
                 </div>
                 {/* Mentor */}
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-4">
                   <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-orange-600">
                       <path d="M14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
@@ -126,7 +126,7 @@ export const Matches: React.FC<MatchesProps> = ({ contextId }) => {
                 </div>
               )}
               {/* View Details Button */}
-              <div className="mt-8 flex justify-end">
+              <div className="mt-8 flex justify-end hidden">
                 <Link href={`/contexts/${contextId}/match/${match.match_id}`}>
                   <Button variant="outline" className="cursor-pointer px-6 py-2 text-base font-semibold">
                     View Details
