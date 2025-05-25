@@ -50,6 +50,8 @@ services:
         - NEXT_PUBLIC_API_URL=https://api.connectier.app
     domainname: connectier.app
     command: "npm run start"
+    environment:
+      NEXT_PUBLIC_API_URL: https://api.connectier.app
     ports:
       - "3000:3000"
     depends_on:
