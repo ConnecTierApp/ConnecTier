@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { useMatches } from '@/hooks/use-matches';
 import Link from 'next/link';
 import React from 'react';
@@ -39,9 +40,12 @@ export const Matches: React.FC<MatchesProps> = ({ contextId, name }) => {
   }
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-2">Available Matches</h2>
-      <ul className="space-y-10">
+    <Card className="flex flex-col h-full w-full pt-0 overflow-hidden">
+      {/* Top bar */}
+      <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
+        <div className="font-semibold text-lg truncate">Available Matches</div>
+      </div>
+      <ul className="px-6 space-y-10">
         {rankedMatches.map(match => {
           const startup = match.entities.find(e => e.type === 'startup');
           const mentor = match.entities.find(e => e.type === 'mentor');
@@ -51,14 +55,14 @@ export const Matches: React.FC<MatchesProps> = ({ contextId, name }) => {
           const confidencePercent = (match.numericalScore !== undefined ? (match.numericalScore + 1) * 25 : 25);
           const matchScore = match.score ? match.score.charAt(0).toUpperCase() + match.score.slice(1) : 'Unknown';
           return (
-            <li
+            <Card
               key={match.match_id}
-              className="relative rounded-2xl border border-gray-200 bg-white/80 shadow-xl backdrop-blur-sm p-8 max-w-xl mx-auto"
+              className="relative rounded-2xl border border-gray-200 bg-white/80 shadow-sm hover:shadow-md backdrop-blur-sm p-8 mx-auto"
             >
               {/* Status */}
               <div className="flex items-center gap-x-2 text-xs mb-6">
                 <div className="rounded-full bg-green-500 h-2.5 w-2.5 animate-pulse" />
-                <span className="text-gray-500">AI Powered Matching Active</span>
+                <span className="text-gray-500">AI Powered Match</span>
               </div>
               {/* Entities Row */}
               <div className="flex flex-col gap-8 sm:flex-row sm:gap-8 sm:items-center mb-6">
@@ -100,12 +104,11 @@ export const Matches: React.FC<MatchesProps> = ({ contextId, name }) => {
                 </div>
                 <div className="mt-2 h-2 w-full rounded-full bg-gray-200">
                   <div
-                    className={`h-2 rounded-full transition-all duration-500 ${
-                      match.score === 'excellent' ? 'bg-green-500' :
-                      match.score === 'good' ? 'bg-blue-500' :
-                      match.score === 'fair' ? 'bg-yellow-400' :
-                      'bg-red-400'
-                    }`}
+                    className={`h-2 rounded-full transition-all duration-500 ${match.score === 'excellent' ? 'bg-green-500' :
+                        match.score === 'good' ? 'bg-blue-500' :
+                          match.score === 'fair' ? 'bg-yellow-400' :
+                            'bg-red-400'
+                      }`}
                     style={{ width: `${confidencePercent}%` }}
                   ></div>
                 </div>
@@ -136,10 +139,10 @@ export const Matches: React.FC<MatchesProps> = ({ contextId, name }) => {
                   </Button>
                 </Link>
               </div>
-            </li>
+            </Card>
           );
         })}
       </ul>
-    </div>
+    </Card>
   );
 };

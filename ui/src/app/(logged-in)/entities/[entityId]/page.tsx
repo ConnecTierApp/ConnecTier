@@ -1,11 +1,18 @@
 "use client"
 
+import { PageHeader } from '@/components/page-header/page-header';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import { useDocument } from '@/hooks/use-document';
 import { useEntity } from '@/hooks/use-entity';
 import { Building, Users } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { Button } from '@/components/ui/button';
 
 interface EntityDetailPageProps {
   params: Promise<{ entityId: string }>;
@@ -54,39 +61,45 @@ function EntityDetailPage({ params }: EntityDetailPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center gap-2 mb-4">
+      <div className="mb-2">
         <Link href={`/entities?type=${apiEntity.type}`} className="text-indigo-600 hover:text-indigo-800">
           ← Back to {getTypeLabel(apiEntity.type)}s
         </Link>
       </div>
-
-      <div className="flex flex-wrap items-center gap-2 mb-2">
-        {getTypeIcon(apiEntity.type)}
-        <h1 className="text-2xl font-bold">{apiEntity.name}</h1>
-        <span className="text-sm text-muted-foreground font-medium">({getTypeLabel(apiEntity.type)})</span>
-        <Link href={`/entity/${apiEntity.entity_id}/submit-document`} passHref legacyBehavior>
-          <Button variant="link" className="ml-2 text-blue-600 hover:text-blue-800">
-            Submission Link
-          </Button>
-        </Link>
-      </div>
-      <p className="text-gray-600 mb-6">View and manage entity details</p>
+      <PageHeader
+        icon={getTypeIcon(apiEntity.type)}
+        title={apiEntity.name}
+        subtitle={
+          <>
+            <span className="text-sm text-muted-foreground font-medium">({getTypeLabel(apiEntity.type)})</span>
+            <span className="ml-2 text-gray-600">View and manage entity details</span>
+          </>
+        }
+        actionArea={
+          <Link href={`/entity/${apiEntity.entity_id}/submit-document`} passHref legacyBehavior>
+            <Button variant="link" className="text-blue-600 hover:text-blue-800">
+              Submission Link
+            </Button>
+          </Link>
+        }
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">{getTypeLabel(apiEntity.type)} Details</h2>
-            {/* <div className="space-x-2">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>{getTypeLabel(apiEntity.type)} Details</CardTitle>
+            {/*
+            <div className="space-x-2">
               <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">
                 Edit
               </button>
               <button className="px-3 py-1 border border-red-300 rounded text-sm text-red-700 hover:bg-red-50">
                 Delete
               </button>
-            </div> */}
-          </div>
-
-          <div className="border-t border-gray-200 pt-4">
+            </div>
+            */}
+          </CardHeader>
+          <CardContent>
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
               <div>
                 <dt className="text-sm font-medium text-gray-500">Name</dt>
@@ -104,18 +117,20 @@ function EntityDetailPage({ params }: EntityDetailPageProps) {
                 </dd>
               </div>
             </dl>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Related Cohorts</h2>
-          <div className="border-t border-gray-200 pt-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Related Cohorts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* Placeholder for related contexts */}
             <div className="space-y-3">
-              {/* Placeholder for related contexts */}
               <div className="text-muted-foreground italic">No related cohorts found.</div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

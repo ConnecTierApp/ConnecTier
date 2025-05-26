@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useContextMessages, ContextMessage } from "@/hooks/use-context-messages";
 import { useContextStatusUpdates } from "@/hooks/use-context-status-updates";
+import { Card } from "@/components/ui/card";
 
 interface StatusUpdatesProps {
   contextId: string;
@@ -47,7 +48,7 @@ export function StatusUpdates({ contextId }: StatusUpdatesProps) {
   }, [allMessages]);
 
   return (
-    <div className="flex flex-col h-full w-full bg-gray-50 rounded-lg shadow-md overflow-hidden">
+    <Card className="flex flex-col h-full w-full bg-gray-50 py-0 overflow-hidden gap-y-0">
       {/* Top bar */}
       <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
         <div className="font-semibold text-lg truncate">Updates</div>
@@ -61,7 +62,7 @@ export function StatusUpdates({ contextId }: StatusUpdatesProps) {
           <div className="text-gray-400 text-center">No messages yet. Messages will appear here as events occur.</div>
         ) : (
           allMessages.map((msg: ContextMessage) => (
-            <div
+            <Card
               key={msg.created_at + (msg.message?.message || "") + (msg.message?.match_id || "")}
               className={cn(
                 "rounded-lg px-4 py-3 shadow-sm max-w-2xl mx-auto",
@@ -79,12 +80,12 @@ export function StatusUpdates({ contextId }: StatusUpdatesProps) {
                 )}
               </div>
               <div className="whitespace-pre-line break-words">{msg?.message?.message?.slice(0, 80)}{msg?.message?.message?.length > 100 ? "..." : ""}</div>
-            </div>
+            </Card>
             // <pre key={i}>{JSON.stringify(msg, null, 2)}</pre>
           ))
         )}
         <div ref={chatEndRef} />
       </div>
-    </div>
+    </Card>
   );
 }

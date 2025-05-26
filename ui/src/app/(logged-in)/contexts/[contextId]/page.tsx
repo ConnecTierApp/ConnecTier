@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import { StatusUpdates } from './components/status-updates/status-updates';
 import { Matches } from './components/matches/matches';
+import { Input } from '@/components/ui/input';
 
 interface ContextPageProps {
   params: Promise<{ contextId: string }>;
@@ -34,9 +35,7 @@ function ContextPage({ params }: ContextPageProps) {
 
       {/* Search bar for entity name */}
       <div className="mb-6 max-w-md">
-        <input
-          type="text"
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        <Input
           placeholder="Search by entity name..."
           value={search}
           onChange={handleInputChange}

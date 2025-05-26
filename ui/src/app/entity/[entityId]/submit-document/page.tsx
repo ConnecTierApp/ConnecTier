@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { FC } from "react";
 import { useParams } from "next/navigation";
-import { LiveAudioVisualizer } from "react-audio-visualize";
+
 
 // Microphone SVG as a component for easy styling
 const MicrophoneIcon: FC<{ active: boolean }> = ({ active }) => (
@@ -100,28 +100,17 @@ const SubmitDocumentPage: FC = () => {
     }
   };
 
-  // Live waveform logic
-  const visualizerRecorder = recording && mediaRecorder ? mediaRecorder : null;
+
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 relative overflow-hidden">
       <div className="flex flex-col items-center gap-8 z-10">
-        {/* Live waveform visualizer */}
+        {/* Audio playback (if available) */}
         <div className="w-[340px] h-[80px] flex items-center justify-center bg-white/80 rounded-xl shadow-lg">
-          {visualizerRecorder ? (
-            <LiveAudioVisualizer
-              mediaRecorder={visualizerRecorder}
-              width={320}
-              height={60}
-              barColor={recording ? "#ef4444" : "#6366f1"}
-              backgroundColor="transparent"
-              barWidth={4}
-              gap={2}
-            />
-          ) : audioUrl ? (
+          {audioUrl ? (
             <audio controls src={audioUrl} className="w-full" />
           ) : (
-            <span className="text-neutral-400 text-lg">Start recording to see waveform</span>
+            <span className="text-neutral-400 text-lg">Start recording to add audio</span>
           )}
         </div>
         {/* Mic button */}
