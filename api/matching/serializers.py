@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tenant, EntityType, Context, Entity, Document, Chunk
+from .models import Tenant, EntityType, Context, Entity, Document, Chunk, Match, StatusUpdate, Feedback
 
 
 class TenantSerializer(serializers.ModelSerializer):
@@ -80,3 +80,61 @@ class ChunkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chunk
         fields = '__all__'  # Includes 'id', 'document', 'text', and 'embedding' fields
+
+
+class MatchSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Match model.
+    
+    Provides serialization/deserialization of Match objects, which represent
+    pairings between seeker and resource entities within a context.
+    Includes support for the match versioning system through the parent field.
+    
+    Note: The serializer includes nested data like feedback and status updates
+    when retrieving a match, but these are not required for creating/updating.
+    """
+    # Including count of feedback items for this match
+    feedback_count = serializers.SerializerMethodField()
+    # Including count of status updates for this match
+    updates_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Match
+        fields = '__all__'  # Includes all fields plus the additional counts
+    
+    def get_feedback_count(self, obj):
+        """Return the count of feedback items for this match."""
+        return obj.feedback.count()
+    
+    def get_updates_count(self, obj):
+        """Return the count of status updates for this match."""
+        return obj.status_updates.count()
+
+
+class StatusUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the StatusUpdate model.
+    
+    Provides serialization/deserialization of StatusUpdate objects, which
+    track system actions, intermediate evaluations, or reasoning steps
+    during the matching process.
+    """
+    # Human-readable representation of source choice
+    source_display = serializers.CharField(source='get_source_display', read_only=True)
+    
+    class Meta:
+        model = StatusUpdate
+        fields = '__all__'  # Includes all fields plus the source display
+
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Feedback model.
+    
+    Provides serialization/deserialization of Feedback objects, which
+    contain user or reviewer input on contexts or specific matches.
+    This feedback can lead to new versioned matches being created.
+    """
+    class Meta:
+        model = Feedback
+        fields = '__all__'  # Includes 'id', 'context', 'match', 'text', 'created_at' fields

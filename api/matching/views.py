@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Tenant, EntityType, Context, Entity, Document, Chunk
-from .serializers import TenantSerializer, EntityTypeSerializer, ContextSerializer, EntitySerializer, DocumentSerializer, ChunkSerializer
+from .models import Tenant, EntityType, Context, Entity, Document, Chunk, Match, StatusUpdate, Feedback
+from .serializers import TenantSerializer, EntityTypeSerializer, ContextSerializer, EntitySerializer, DocumentSerializer, ChunkSerializer, MatchSerializer, StatusUpdateSerializer, FeedbackSerializer
 
 
 class TenantViewSet(viewsets.ModelViewSet):
@@ -125,3 +125,69 @@ class ChunkViewSet(viewsets.ModelViewSet):
     """
     queryset = Chunk.objects.all()
     serializer_class = ChunkSerializer
+
+
+class MatchViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for Match model operations.
+    
+    Provides complete CRUD operations for Matches:
+    - list: GET /api/matches/
+    - retrieve: GET /api/matches/{id}/
+    - create: POST /api/matches/
+    - update: PUT /api/matches/{id}/
+    - partial_update: PATCH /api/matches/{id}/
+    - delete: DELETE /api/matches/{id}/
+    
+    Matches represent pairings between seeker and resource entities within a context.
+    The model supports versioning through a self-referential parent field, which enables
+    tracking how matches evolve over time in response to feedback.
+    
+    Currently no permissions are applied - all endpoints are publicly accessible.
+    """
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
+
+
+class StatusUpdateViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for StatusUpdate model operations.
+    
+    Provides complete CRUD operations for StatusUpdates:
+    - list: GET /api/status-updates/
+    - retrieve: GET /api/status-updates/{id}/
+    - create: POST /api/status-updates/
+    - update: PUT /api/status-updates/{id}/
+    - partial_update: PATCH /api/status-updates/{id}/
+    - delete: DELETE /api/status-updates/{id}/
+    
+    StatusUpdates track system actions, intermediate evaluations, or reasoning steps
+    during the matching process. They can come from the system, language models,
+    or human input, and may be associated with a context, a specific match, or both.
+    
+    Currently no permissions are applied - all endpoints are publicly accessible.
+    """
+    queryset = StatusUpdate.objects.all()
+    serializer_class = StatusUpdateSerializer
+
+
+class FeedbackViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for Feedback model operations.
+    
+    Provides complete CRUD operations for Feedback:
+    - list: GET /api/feedback/
+    - retrieve: GET /api/feedback/{id}/
+    - create: POST /api/feedback/
+    - update: PUT /api/feedback/{id}/
+    - partial_update: PATCH /api/feedback/{id}/
+    - delete: DELETE /api/feedback/{id}/
+    
+    Feedback contains user or reviewer input on contexts or specific matches.
+    This feedback can lead to new versioned matches being created with
+    improvements based on the feedback provided.
+    
+    Currently no permissions are applied - all endpoints are publicly accessible.
+    """
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tenant, EntityType, Context, Entity, Document, Chunk
+from .models import Tenant, EntityType, Context, Entity, Document, Chunk, Match, StatusUpdate, Feedback
 
 
 @admin.register(Tenant)
@@ -85,3 +85,61 @@ class ChunkAdmin(admin.ModelAdmin):
     search_fields = ('text',)
     readonly_fields = ('embedding',)  # Vector field is read-only in admin
     ordering = ('document', 'id')
+
+
+@admin.register(Match)
+class MatchAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for the Match model.
+    
+    Provides an interface for managing pairings between seeker and resource entities.
+    Displays key relationships and includes versioning details.
+    """
+    list_display = ('id', 'context', 'seeker', 'resource', 'score', 'created_at')
+    list_filter = ('context', 'seeker__entity_type', 'resource__entity_type')
+    search_fields = ('notes',)
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('context', 'seeker', 'resource')
+        }),
+        ('Versioning', {
+            'fields': ('parent',)
+        }),
+        ('Details', {
+            'fields': ('score', 'notes', 'created_at')
+        }),
+    )
+
+
+@admin.register(StatusUpdate)
+class StatusUpdateAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for the StatusUpdate model.
+    
+    Provides an interface for managing status updates during the matching process.
+    Displays source information and allows filtering by various relationships.
+    """
+    list_display = ('id', 'context', 'match', 'source', 'created_at')
+    list_filter = ('source', 'context', 'match')
+    search_fields = ('message',)
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at',)
+    filter_horizontal = ('entities',)
+
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for the Feedback model.
+    
+    Provides an interface for managing user feedback on contexts or matches.
+    Includes filtering and search capabilities for easy navigation.
+    """
+    list_display = ('id', 'context', 'match', 'created_at')
+    list_filter = ('context', 'match')
+    search_fields = ('text',)
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at',)

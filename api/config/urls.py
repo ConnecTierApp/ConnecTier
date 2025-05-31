@@ -19,7 +19,7 @@ from django.urls import path, include
 from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView, EntityListView, ContextCreateView, ContextListView, ContextDetailView, EntityDetailView, EntityTranscribeView, ProfileView, DocumentCreateView, DocumentDetailView, ContextMatchesListView, ContextStatusUpdatesListView
 from django.http import HttpResponse
 from rest_framework import routers
-from matching.views import TenantViewSet, EntityTypeViewSet, ContextViewSet, EntityViewSet, DocumentViewSet, ChunkViewSet
+from matching.views import TenantViewSet, EntityTypeViewSet, ContextViewSet, EntityViewSet, DocumentViewSet, ChunkViewSet, MatchViewSet, StatusUpdateViewSet, FeedbackViewSet
 
 # Create DRF router for matching app
 router = routers.DefaultRouter()
@@ -29,6 +29,9 @@ router.register(r'contexts-api', ContextViewSet)
 router.register(r'entities-api', EntityViewSet)
 router.register(r'documents-api', DocumentViewSet)
 router.register(r'chunks', ChunkViewSet)
+router.register(r'matches', MatchViewSet)
+router.register(r'status-updates', StatusUpdateViewSet)
+router.register(r'feedback', FeedbackViewSet)
 
 urlpatterns = [
     path('', lambda request: HttpResponse("OK", status=200)),
