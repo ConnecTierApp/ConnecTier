@@ -15,9 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from core.views import RegisterView, LoginView, OrganizationUpdateView, EntityCreateView, EntityListView, ContextCreateView, ContextListView, ContextDetailView, EntityDetailView, EntityTranscribeView, ProfileView, DocumentCreateView, DocumentDetailView, ContextMatchesListView, ContextStatusUpdatesListView
 from django.http import HttpResponse
+from rest_framework import routers
+from matching.views import TenantViewSet, EntityTypeViewSet, ContextViewSet, EntityViewSet, DocumentViewSet, ChunkViewSet
+
+# Create DRF router for matching app
+router = routers.DefaultRouter()
+router.register(r'tenants', TenantViewSet)
+router.register(r'entity-types', EntityTypeViewSet)
+router.register(r'contexts-api', ContextViewSet)
+router.register(r'entities-api', EntityViewSet)
+router.register(r'documents-api', DocumentViewSet)
+router.register(r'chunks', ChunkViewSet)
 
 urlpatterns = [
     path('', lambda request: HttpResponse("OK", status=200)),
@@ -38,4 +49,7 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('document/', DocumentCreateView.as_view(), name='document_create'),
     path('document/<uuid:document_id>', DocumentDetailView.as_view(), name='document_detail'),
+    
+    # DRF router for the matching app
+    path('api/', include(router.urls)),
 ]
