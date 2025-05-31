@@ -1,9 +1,10 @@
 from django.db import models
 from pgvector.django import VectorField
 from django.utils import timezone
+from core.models import BaseModel
 
 
-class Tenant(models.Model):
+class Tenant(BaseModel):
     """
     Represents an organization or company in a multi-tenant system.
     
@@ -18,7 +19,7 @@ class Tenant(models.Model):
         return self.name
 
 
-class EntityType(models.Model):
+class EntityType(BaseModel):
     """
     Defines categories or roles for entities within a specific tenant.
     
@@ -41,7 +42,7 @@ class EntityType(models.Model):
         return f"{self.name} ({self.tenant.name})"
 
 
-class Context(models.Model):
+class Context(BaseModel):
     """
     Specifies a matching scenario with associated entity types and roles.
     
@@ -93,7 +94,7 @@ class Context(models.Model):
         return f"{self.name} ({self.tenant.name})"
 
 
-class Entity(models.Model):
+class Entity(BaseModel):
     """
     Represents a participant in the matching system.
     
@@ -129,7 +130,7 @@ class Entity(models.Model):
         return f"Entity {self.id} - {self.entity_type.name} ({self.context.name})"
 
 
-class Document(models.Model):
+class Document(BaseModel):
     """
     Contains textual information related to an entity.
     
@@ -162,7 +163,7 @@ class Document(models.Model):
         return f"Document {self.id} for {self.entity}"
 
 
-class Chunk(models.Model):
+class Chunk(BaseModel):
     """
     Represents a segment of a document with an associated embedding vector.
     
@@ -192,7 +193,7 @@ class Chunk(models.Model):
         return f"Chunk {self.id} for {self.document}"
 
 
-class Match(models.Model):
+class Match(BaseModel):
     """
     Represents a pairing between a seeker entity and a resource entity in a specific context.
     
@@ -265,7 +266,7 @@ class Match(models.Model):
         ordering = ['-created_at']
 
 
-class StatusUpdate(models.Model):
+class StatusUpdate(BaseModel):
     """
     Represents a status update, log entry, or reasoning step in the matching process.
     
@@ -320,10 +321,7 @@ class StatusUpdate(models.Model):
     )
     
     # Timestamp when this update was created
-    created_at = models.DateTimeField(
-        default=timezone.now,
-        help_text="When this status update was created"
-    )
+    # created_at is provided by BaseModel
     
     def __str__(self):
         """Returns a string representation with source and timestamp."""
@@ -334,7 +332,7 @@ class StatusUpdate(models.Model):
         ordering = ['-created_at']
 
 
-class Feedback(models.Model):
+class Feedback(BaseModel):
     """
     Represents user feedback on a context or specific match.
     
@@ -366,10 +364,7 @@ class Feedback(models.Model):
     )
     
     # Timestamp when this feedback was created
-    created_at = models.DateTimeField(
-        default=timezone.now,
-        help_text="When this feedback was submitted"
-    )
+    # created_at is provided by BaseModel
     
     def __str__(self):
         """Returns a string representation with context and optional match."""
